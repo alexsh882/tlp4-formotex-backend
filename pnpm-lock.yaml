@@ -8,15 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@types/cors':
-        specifier: ^2.8.17
-        version: 2.8.17
-      '@types/morgan':
-        specifier: ^1.9.9
-        version: 1.9.9
-      '@types/sequelize':
-        specifier: ^4.28.20
-        version: 4.28.20
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -36,12 +27,21 @@ importers:
         specifier: ^6.37.3
         version: 6.37.3(pg@8.12.0)
     devDependencies:
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
+      '@types/morgan':
+        specifier: ^1.9.9
+        version: 1.9.9
       '@types/node':
         specifier: ^22.5.1
         version: 22.5.1
+      '@types/sequelize':
+        specifier: ^4.28.20
+        version: 4.28.20
       nodemon:
         specifier: ^3.1.4
         version: 3.1.4
