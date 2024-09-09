@@ -1,6 +1,10 @@
-import { Dialect, Sequelize } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
+import { dbConfig } from "./config";
 import { IDatabase } from "./db.interface";
-
+import { Dialect } from "sequelize";
+import User from "../models/users.model";
+import Role from "../models/role.model";
+import { seedRoles } from "./seeders/roles.seeder";
 
 export class SequelizeConfig implements IDatabase {
   private DB_HOST: string;
@@ -12,12 +16,12 @@ export class SequelizeConfig implements IDatabase {
 
   // singleton para obtener la instancia de la clase
   private static instance: SequelizeConfig;
-    
+
   static getInstance(): SequelizeConfig {
-    if (!SequelizeConfig.instance) {
-      SequelizeConfig.instance = new SequelizeConfig();
+    if (!this.instance) {
+      this.instance = new SequelizeConfig();
     }
-    return SequelizeConfig.instance;
+    return this.instance;
   }
 
   // probar la existencia de variable de entorno
@@ -29,7 +33,7 @@ export class SequelizeConfig implements IDatabase {
   }
 
   constructor() {
-    this.DB_HOST = this.verifyEnvVar('DB_HOST') || "localhost";
+    this.DB_HOST = this.verifyEnvVar("DB_HOST") || "localhost";
     this.DB_PORT = process.env.DB_PORT || 5432;
     this.DB_NAME = process.env.DB_NAME || "test";
     this.DB_DIALECT = process.env.DB_DIALECT || "postgres";
@@ -37,27 +41,35 @@ export class SequelizeConfig implements IDatabase {
     this.DB_PASSWORD = process.env.DB_PASSWORD || "test";
   }
 
-  async dbInit() {    
-
+  // inicializar la base de datos
+  async dbInit() {
     const db = this.getDbConfig();
 
-    await db.sync()
+    db.addModels([User, Role]);
+
+    await db
+      .sync({ force: false })
       .then(() => {
+        seedRoles();
         console.log("La base de datos se ha conectado correctamente.");
       })
       .catch((err: Error) => {
-        console.error("No se puede conectar a la base de datos por el error: ", err);
+        console.error(
+          "No se puede conectar a la base de datos por el error: ",
+          err
+        );
       });
   }
 
+  // obtener instancia de sequelize con la configuración de la base de datos
   getDbConfig(): Sequelize {
-    return new Sequelize(this.DB_NAME, this.DB_USER, this.DB_PASSWORD, {
-      host: this.DB_HOST,
-      port: this.DB_PORT as number,
+    return new Sequelize({
+      database: this.DB_NAME,
       dialect: this.DB_DIALECT as Dialect,
+      host: this.DB_HOST,
+      port: Number(this.DB_PORT),
+      username: this.DB_USER,
+      password: this.DB_PASSWORD,
     });
   }
 }
-
-export const dbConfig = SequelizeConfig.getInstance();
-export const sequelize = dbConfig.getDbConfig();
