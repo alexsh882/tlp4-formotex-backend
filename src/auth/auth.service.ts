@@ -19,10 +19,13 @@ type UserSignIn = {
 };
 
 export class AuthService {
-  constructor(private userModel: typeof User, private roleModel: typeof Role) {}
+  constructor(
+    private userModel?: typeof User,
+    private roleModel?: typeof Role
+  ) {}
 
   signUp = async ({ names, username, password }: UserSignUp) => {
-    const userFounded = await this.userModel.findOne({
+    const userFounded = await this.userModel?.findOne({
       where: { username: username },
     });
 
@@ -30,7 +33,7 @@ export class AuthService {
       throw new Error("El usuario ya existe");
     }
 
-    const roleUser = await this.roleModel.findOne({
+    const roleUser = await this.roleModel?.findOne({
       where: { name: ROLES.USER },
     });
 
@@ -38,12 +41,16 @@ export class AuthService {
       throw new Error("El rol no existe");
     }
 
-    const newUser = await this.userModel.create({
+    const newUser = await this.userModel?.create({
       names,
       username,
       password: bcrypt.hashSync(password, 10),
       role_id: roleUser.role_id,
     });
+
+    if (!newUser) {
+      throw new Error("Error al crear el usuario");
+    }
 
     const user = {
       ...newUser.dataValues,
@@ -52,13 +59,13 @@ export class AuthService {
       role_id: undefined,
     };
 
-    const token = await this.createToken(newUser);
+    const token = await this.createToken(user.user_id);
 
     return { user, token };
   };
 
   signIn = async ({ username, password }: UserSignIn) => {
-    const userFounded = await this.userModel.findOne({
+    const userFounded = await this.userModel?.findOne({
       where: { username },
       include: {
         model: this.roleModel,
@@ -77,7 +84,7 @@ export class AuthService {
       throw new BadRequestError("Usuario o contraseña incorrecta");
     }
 
-    const token = await this.createToken(userFounded);
+    const token = await this.createToken(userFounded.user_id);
 
     const user = {
       ...userFounded.dataValues,
@@ -88,18 +95,18 @@ export class AuthService {
   };
 
   logout = async ({ id }: { id: number }) => {
-    const user = await this.userModel.findByPk(id);
+    const user = await this.userModel?.findByPk(id);
 
     if (!user) {
       throw new Error("Usuario no encontrado");
     }
     return null;
-  }
+  };
 
-  async createToken(user: User) {
+  async createToken(user_id: number) {
     return new Promise((resolve, reject) => {
       jwt.sign(
-        { user_id: user.user_id, expires_in: 86400 },
+        { user_id: user_id, expires_in: 86400 },
         process.env.JWT_SECRET as Secret,
         {
           expiresIn: 86400, // 24 horas
@@ -114,7 +121,7 @@ export class AuthService {
     });
   }
 
-  async verifyToken(token: string) {
+  verifyToken = async (token: string) => {
     return new Promise((resolve, reject) => {
       jwt.verify(
         token,
@@ -124,16 +131,18 @@ export class AuthService {
             reject(err);
           }
           const dataDecoded = decoded as JwtPayload;
+
           if (!dataDecoded.user_id) {
             reject(err);
           }
-          const user = await this.userModel.findByPk(dataDecoded.user_id);
+          const user = await this.userModel?.findByPk(dataDecoded.user_id);
+
           resolve(user);
           reject(new Error("Token no válido o no existe"));
         }
       );
     });
-  }
+  };
 }
 
 type JwtPayload = {

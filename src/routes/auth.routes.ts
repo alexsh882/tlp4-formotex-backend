@@ -4,7 +4,8 @@ import { AuthService } from "../auth/auth.service";
 import User from "../models/users.model";
 import Role from "../models/role.model";
 import { UserSignInSchema, UserSignUpSchema } from "../validations/auth.schema";
-import { validator } from "../validations/validator";
+import { validator } from "../middlewares/validator";
+import { isAuthenticated } from "../middlewares/authentication";
 
 export class AuthRoutes {
   constructor(private router : Router) {
@@ -22,7 +23,7 @@ export class AuthRoutes {
 
     this.router.post("/api/auth/login", validator(UserSignInSchema), authController.signIn);
 
-    this.router.post("/api/auth/logout", authController.logout);
+    this.router.post("/api/auth/logout", isAuthenticated, authController.logout);
 
     return this.router;
   }
