@@ -23,7 +23,7 @@ export default class User extends Model<UserAttributes, UserCreationAttributes> 
     primaryKey: true,
     autoIncrement: true
   })
-  user_id!: number;
+  user_id: number;
 
   @Column({})
   names: string;

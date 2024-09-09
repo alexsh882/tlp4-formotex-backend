@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import { AppRouter } from "./routes/app.routes";
 
 export class Server {
   private app: Application;
@@ -30,6 +31,7 @@ export class Server {
   }
 
   public routes(): void {
+    this.app.use(AppRouter.routes);
   }
 
   onBeforeStart(callback: () => Promise<void>): void {
@@ -40,6 +42,7 @@ export class Server {
     for (const callback of this.beforeStart) {
       await callback();
     }
+
 
     this.app.listen(this.app_port, () => {
       console.log(
