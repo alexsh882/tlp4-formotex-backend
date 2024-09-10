@@ -4,11 +4,8 @@ import Role from "../models/role.model";
 import User from "../models/users.model";
 
 export class AuthController {
-  private authService: AuthService;
-
-  constructor(authService: AuthService) {
-    this.authService = authService;
-  }
+  
+  constructor(private authService: AuthService) {}
 
   signUp = async (req: Request, res: Response) => {
     try {
