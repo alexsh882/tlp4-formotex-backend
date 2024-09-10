@@ -5,6 +5,7 @@ import { Dialect } from "sequelize";
 import User from "../models/users.model";
 import Role from "../models/role.model";
 import { seedRoles } from "./seeders/roles.seeder";
+import EquipmentType from "../models/equipment-type.model";
 
 export class SequelizeConfig implements IDatabase {
   private DB_HOST: string;
@@ -45,10 +46,12 @@ export class SequelizeConfig implements IDatabase {
   async dbInit() {
     const db = this.getDbConfig();
 
-    db.addModels([User, Role]);
+    // db.addModels([User, Role, EquipmentType]);
+
+    db.addModels([__dirname + "/../models/*.model.*"]);
 
     await db
-      .sync({ force: false })
+      .sync({ force: true })
       .then(() => {
         seedRoles();
         console.log("La base de datos se ha conectado correctamente.");
