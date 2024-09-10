@@ -46,12 +46,10 @@ export class SequelizeConfig implements IDatabase {
   async dbInit() {
     const db = this.getDbConfig();
 
-    // db.addModels([User, Role, EquipmentType]);
-
     db.addModels([__dirname + "/../models/*.model.*"]);
 
     await db
-      .sync({ force: true })
+      .sync({ force: false })
       .then(() => {
         seedRoles();
         console.log("La base de datos se ha conectado correctamente.");

@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
-import Role from "../models/role.model";
-import User from "../models/users.model";
-
 export class AuthController {
   
   constructor(private authService: AuthService) {}
@@ -32,7 +29,6 @@ export class AuthController {
       });
       return res.status(200).json({ user, token });
     } catch (error: unknown) {
-      console.log(error);
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });
       }
