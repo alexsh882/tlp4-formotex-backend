@@ -7,12 +7,12 @@ export const validator = (schema: z.Schema) => {
     return (req: Request, res: Response, next: NextFunction) => {
     
         try {
-            schema.parse(req.body);
+            schema.parseAsync(req.body);
             next();
           } catch (error) {
             if (error instanceof ZodError) {            
               res.status(400).json({ message: 'Datos inválidos', errors: error.issues });
-            } else {
+            } else {              
               res.status(500).json({ error: 'Error interno del servidor' });
             }
           }
