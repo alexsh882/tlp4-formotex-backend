@@ -103,7 +103,7 @@ export class AuthService {
     return null;
   };
 
-  async createToken(user_id: number) {
+  async createToken(user_id: string) {
     return new Promise((resolve, reject) => {
       jwt.sign(
         { user_id: user_id, expires_in: 86400 },

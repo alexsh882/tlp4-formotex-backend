@@ -1,10 +1,10 @@
-import { Table, Column, Model, HasMany, CreatedAt, DeletedAt, UpdatedAt } from "sequelize-typescript";
+import { Table, Column, Model, HasMany, CreatedAt, DeletedAt, UpdatedAt, PrimaryKey, Default, DataType } from "sequelize-typescript";
 
 import { Optional } from "sequelize";
 import User from "./users.model";
 
 interface RoleAttributes {
-  role_id: number;
+  role_id: string;
   name: string;
 }
 
@@ -17,11 +17,11 @@ interface RoleCreationAttributes extends Optional<RoleAttributes, 'role_id'> {}
   timestamps: true
 })
 export default class Role extends Model<RoleAttributes, RoleCreationAttributes> {
-  @Column({
-    primaryKey: true,
-    autoIncrement: true
-  })
-  role_id: number;
+  
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  role_id: string;
 
   @Column({
     unique: true

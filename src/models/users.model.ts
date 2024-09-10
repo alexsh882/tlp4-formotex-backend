@@ -1,29 +1,42 @@
-import { Table, Column, Model, BelongsTo, ForeignKey, CreatedAt, UpdatedAt, DeletedAt } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  BelongsTo,
+  ForeignKey,
+  CreatedAt,
+  UpdatedAt,
+  DeletedAt,
+  Default,
+  PrimaryKey,
+  DataType,
+} from "sequelize-typescript";
 import Role from "./role.model";
 import { Optional } from "sequelize";
 
 interface UserAttributes {
-  user_id: number;
+  user_id: string;
   names: string;
   username: string;
   password: string;
-  role_id: number;
+  role_id: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'user_id'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, "user_id"> {}
 
 @Table({
   tableName: "users",
   paranoid: true,
   timestamps: true,
 })
-export default class User extends Model<UserAttributes, UserCreationAttributes> {
-  
-  @Column({
-    primaryKey: true,
-    autoIncrement: true
-  })
-  user_id: number;
+export default class User extends Model<
+  UserAttributes,
+  UserCreationAttributes
+> {
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  user_id: string;
 
   @Column({})
   names: string;
@@ -35,7 +48,7 @@ export default class User extends Model<UserAttributes, UserCreationAttributes> 
   password: string;
 
   @ForeignKey(() => Role)
-  role_id: number;
+  role_id: string;
 
   @BelongsTo(() => Role)
   user_role: Role;
