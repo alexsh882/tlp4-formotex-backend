@@ -8,23 +8,22 @@ import { validator } from "../middlewares/validator";
 import { isAuthenticated } from "../middlewares/authentication";
 
 export class AuthRoutes {
-  constructor(private router : Router) {
-    this.router = router;
-  }
+  // constructor(private router : Router) {}
 
-  routes(): Router {
+  static get routes(): Router {
     
+    const router = Router();
+
     const authService = new AuthService(User, Role);
 
     const authController = new AuthController(authService);    
 
+    router.post("/auth/register", validator(UserSignUpSchema), authController.signUp);
 
-    this.router.post("/api/auth/register", validator(UserSignUpSchema), authController.signUp);
+    router.post("/auth/login", validator(UserSignInSchema), authController.signIn);
 
-    this.router.post("/api/auth/login", validator(UserSignInSchema), authController.signIn);
+    router.post("/auth/logout", isAuthenticated, authController.logout);
 
-    this.router.post("/api/auth/logout", isAuthenticated, authController.logout);
-
-    return this.router;
+    return router;
   }
 }

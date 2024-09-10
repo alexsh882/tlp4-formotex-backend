@@ -1,14 +1,14 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { AuthRoutes } from "./auth.routes";
+import { EquipmentTypeRoutes } from "./equipment-type.routes";
 
 export class AppRouter {
   static get routes(): Router {
     const router = Router();
 
-    // Auth routes
-    const authRoutes = new AuthRoutes(router);
-    router.use(authRoutes.routes());
+    router.use("/api", AuthRoutes.routes);
+    router.use("/api", EquipmentTypeRoutes.routes);
 
-    return router
+    return router;
   }
 }
