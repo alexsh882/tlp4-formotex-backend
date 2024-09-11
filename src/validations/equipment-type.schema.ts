@@ -42,7 +42,6 @@ export const UpdateEquipmentTypeSchema = z
     async (data) => {
       const name = data.body.name;
       const id = data.params.id;
-      console.log({ name }, { id });
 
       return await equipmentTypeService
         .getEquipmentTypeByName(name)

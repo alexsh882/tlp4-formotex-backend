@@ -19,7 +19,6 @@ export class EquipmentTypeController {
   getEquipmentTypes = async (_: Request, res: Response) => {
     try {      
       const equipmentTypes = await this.equipmentTypesService.getEquipmentTypes();
-      console.log("getEquipmentTypes", {equipmentTypes});
       res.status(200).send(equipmentTypes);
     } catch (error) {
       if (error instanceof Error) {

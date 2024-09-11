@@ -14,10 +14,6 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
 
   if (token) {
     const user = await authService.verifyToken(token);
-
-    console.log(user);
-    
-
     if (user) {
       req.user = user as User;
       return next();
