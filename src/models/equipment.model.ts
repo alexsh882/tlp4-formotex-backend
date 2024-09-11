@@ -68,7 +68,7 @@ export default class Equipment extends Model<
   @Column({
     allowNull: true,
   })
-  location: string;
+  warehouse: string;
 
   @Column({
     allowNull: true,
