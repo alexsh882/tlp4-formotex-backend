@@ -20,7 +20,7 @@ interface EquipmentAttributes {
   make: string;
   model: string;
   status: string;
-  location: string;
+  warehouse: string;
   date_of_acquisition: Date;
   observations: string;
   equipment_type_id: string;
