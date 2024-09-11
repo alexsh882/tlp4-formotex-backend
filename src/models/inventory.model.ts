@@ -12,7 +12,7 @@ import {
 } from "sequelize-typescript";
 
 import { Optional } from "sequelize";
-import { InventoryEntries } from "./inventory-entry.model";
+import InventoryEntry from "./inventory-entry.model";
 
 interface InventoryAttributes {
   inventory_id: string;
@@ -40,8 +40,8 @@ export default class Inventory extends Model<
   })
   name: string;
 
-  @HasMany(() => InventoryEntries)
-  users: InventoryEntries[];
+  @HasMany(() => InventoryEntry)
+  users: InventoryEntry[];
 
   @CreatedAt
   created_at: Date;

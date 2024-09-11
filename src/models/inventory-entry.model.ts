@@ -45,7 +45,7 @@ export const ENUM_EQUIPMENT_STATUS = Object.values(EquipmentStatus);
   paranoid: true,
   timestamps: true,
 })
-export class InventoryEntries extends Model<
+export default class InventoryEntry extends Model<
   InventoryEntriesAttributes,
   InventoryEntriesCreationAttributes
 > {
