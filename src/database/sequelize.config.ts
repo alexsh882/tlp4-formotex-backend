@@ -27,7 +27,11 @@ export class SequelizeConfig implements IDatabase {
 
   // probar la existencia de variable de entorno
   verifyEnvVar(envVar: string): string {
-    if (!process.env[envVar]) {
+    //verificar que la variable de entorno está definida
+
+    const envVarExists = Object.keys(process.env).indexOf(envVar) !== -1
+        
+    if (!envVarExists) {
       throw new Error(`La variable de entorno ${envVar} no está definida.`);
     }
     return process.env[envVar] as string;
@@ -35,11 +39,11 @@ export class SequelizeConfig implements IDatabase {
 
   constructor() {
     this.DB_HOST = this.verifyEnvVar("DB_HOST") || "localhost";
-    this.DB_PORT = process.env.DB_PORT || 5432;
-    this.DB_NAME = process.env.DB_NAME || "test";
-    this.DB_DIALECT = process.env.DB_DIALECT || "postgres";
-    this.DB_USER = process.env.DB_USER || "test";
-    this.DB_PASSWORD = process.env.DB_PASSWORD || "test";
+    this.DB_PORT = this.verifyEnvVar("DB_PORT") || 5432;
+    this.DB_NAME = this.verifyEnvVar("DB_NAME") || "test";
+    this.DB_DIALECT = this.verifyEnvVar("DB_DIALECT") || "postgres";
+    this.DB_USER = this.verifyEnvVar("DB_USER") || "test";
+    this.DB_PASSWORD = this.verifyEnvVar("DB_PASSWORD") || "test";
   }
 
   // inicializar la base de datos
