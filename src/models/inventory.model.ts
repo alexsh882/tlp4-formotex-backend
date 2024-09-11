@@ -12,14 +12,14 @@ import {
 } from "sequelize-typescript";
 
 import { Optional } from "sequelize";
-import { InventoryEntries } from "./inventory-entries.model";
+import { InventoryEntries } from "./inventory-entry.model";
 
 interface InventoryAttributes {
-  make_id: string;
+  inventory_id: string;
   name: string;
 }
 
-interface InventoryCreationAttributes extends Optional<InventoryAttributes, "make_id"> {}
+interface InventoryCreationAttributes extends Optional<InventoryAttributes, "inventory_id"> {}
 
 @Table({
   tableName: "inventories",
@@ -33,7 +33,7 @@ export default class Inventory extends Model<
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  make_id: string;
+  inventory_id: string;
 
   @Column({
     unique: true,

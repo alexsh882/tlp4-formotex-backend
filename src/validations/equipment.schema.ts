@@ -1,5 +1,5 @@
 import { z } from "zod";
-import Equipment, { EquipmentStatus } from "../models/equipment.model";
+import Equipment from "../models/equipment.model";
 import { UserService } from "../features/users/user.service";
 import User from "../models/users.model";
 import { EquipmentTypesService } from "../features/equipment-types/equipment-types.service";
@@ -11,28 +11,20 @@ const equipmentService = new EquipmentsService(Equipment);
 const userService = new UserService(User);
 
 const bodyEquipmentSchema = z.object({
-  make: z.string({ message: "La marca es requerida" }).min(1, {
-    message: "La marca es requerida",
-  }),
   model: z
     .string({ message: "El modelo es requerido" })
     .min(1, { message: "El modelo es requerido" }),
 
-  status: z.nativeEnum(EquipmentStatus, {
-    message: "El estado es requerido",
-  }),
-  warehouse: z.string({ message: "La ubicación es requerida" }).min(1, {
-    message: "La ubicación es requerida",
-  }),
-  date_of_acquisition: z.date({
-    message: "La fecha de adquisición es requerida",
-    coerce: true,
-  }),
-  observations: z.optional(
+    characteristics: z.optional(
     z.string({ message: "Las observaciones son requeridas" }).min(1, {
       message: "Las observaciones son requeridas",
     })
   ),
+  
+  make_id: z
+    .string({ message: "El tipo de equipo es requerido" })
+    .uuid({ message: "El tipo de equipo es requerido" }),
+    
   equipment_type_id: z
     .string({ message: "El tipo de equipo es requerido" })
     .uuid({ message: "El tipo de equipo es requerido" })

@@ -18,12 +18,9 @@ import Make from "./makes.model";
 
 interface EquipmentAttributes {
   equipment_id: number;
-  make: string;
   model: string;
-  status: string;
-  warehouse: string;
-  date_of_acquisition: Date;
-  observations: string;
+  characteristics: string;
+  make_id: string;
   equipment_type_id: string;
   user_id: string;
 }
@@ -48,7 +45,6 @@ export default class Equipment extends Model<
 
   @Column({})
   model: string;
-
 
   @Column({
     allowNull: true,
