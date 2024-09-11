@@ -20,5 +20,5 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
     }
   }
 
-  return res.status(401).json({ message: "Unauthorized" });
+  return res.status(401).json({ message: "Tenes que iniciar sesión para continuar." });
 };
