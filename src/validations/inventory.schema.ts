@@ -4,7 +4,7 @@ import Inventory from "../models/inventory.model";
 
 const inventoryService = new InventoryService(Inventory);
 
-export const CreateEquipmentTypeSchema = z.object({
+export const CreateInventorySchema = z.object({
   body: z.object({
     name: z
       .string({ message: "El nombre es requerido" })
@@ -27,7 +27,7 @@ export const CreateEquipmentTypeSchema = z.object({
   }),
 });
 
-export const UpdateEquipmentTypeSchema = z
+export const UpdateInventorySchema = z
   .object({
     body: z.object({
       name: z.string({ message: "El nombre es requerido" }).min(1, {
