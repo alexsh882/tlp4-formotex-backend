@@ -3,12 +3,9 @@ import Equipment from "../../models/equipment.model";
 import User from "../../models/users.model";
 
 type CreateEquipmentDto = {
-  make: string;
   model: string;
-  status: string;
-  warehouse: string;
-  date_of_acquisition: Date;
-  observations: string;
+  characteristics: string;
+  make_id: string;
   equipment_type_id: string;
   user_id: string;
 };
@@ -35,9 +32,6 @@ export class EquipmentsService {
     return await this.equipmentsModel.findByPk(id);
   }
 
-  async getEquipmentByMake(make: string) {
-    return await this.equipmentsModel.findOne({ where: { make } });
-  }
 
   async getEquipmentByModel(model: string) {
     return await this.equipmentsModel.findOne({ where: { model } });
