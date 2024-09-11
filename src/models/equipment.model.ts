@@ -14,6 +14,7 @@ import {
 import { Optional } from "sequelize";
 import EquipmentType from "./equipment-type.model";
 import User from "./users.model";
+import Make from "./makes.model";
 
 interface EquipmentAttributes {
   equipment_id: number;
@@ -30,14 +31,6 @@ interface EquipmentAttributes {
 interface EquipmentCreationAttributes
   extends Optional<EquipmentAttributes, "equipment_id"> {}
 
-export enum EquipmentStatus {
-  REPAIRED = "repaired",
-  UNDER_REPAIR = "under_repair",
-  MAINTENANCE = "maintenance",
-  DISPOSED = "disposed",
-}
-
-export const ENUM_EQUIPMENT_STATUS = Object.values(EquipmentStatus);
 
 @Table({
   tableName: "equipments",
@@ -54,38 +47,26 @@ export default class Equipment extends Model<
   equipment_id: string;
 
   @Column({})
-  make: string;
-
-  @Column({})
   model: string;
 
-  @Column({
-    type: DataType.ENUM,
-    values: Object.values(EquipmentStatus),
-  })
-  status: string;
-
-  @Column({
-    allowNull: true,
-  })
-  warehouse: string;
-
-  @Column({
-    allowNull: true,
-  })
-  date_of_acquisition: Date;
 
   @Column({
     allowNull: true,
     type: DataType.TEXT,
   })
-  observations: string;
+  characteristics: string;
+
+  @ForeignKey(() => Make)
+  make_id: string;
 
   @ForeignKey(() => EquipmentType)
   equipment_type_id: string;
 
   @ForeignKey(() => User)
   user_id: string;
+
+  @BelongsTo(() => Make)
+  make: Make;
 
   @BelongsTo(() => EquipmentType)
   equipment_type: EquipmentType;
