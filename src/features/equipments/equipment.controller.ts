@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { EquipmentsService } from "./equipment.service";
+import User from "../../models/users.model";
 
 export class EquipmentController {
   constructor(private equipmentService: EquipmentsService) {}
@@ -44,11 +45,14 @@ export class EquipmentController {
 
   updateEquipment = async (req: Request, res: Response) => {
     try {
-      const equipment = await this.equipmentService.updateEquipment(
+      await this.equipmentService.updateEquipment(
         req.params.id,
-        req.body
-      );
-      res.status(200).json(equipment);
+        req.body, 
+        req.user as User
+      );      
+      res.status(200).json({
+        message: "Equipo se ha actualizado correctamente",
+      });
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });

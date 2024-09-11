@@ -1,14 +1,16 @@
+import EquipmentType from "../../models/equipment-type.model";
 import Equipment from "../../models/equipment.model";
+import User from "../../models/users.model";
 
 type CreateEquipmentDto = {
-    make: string;
-    model: string;
-    status: string;
-    location: string;
-    date_of_acquisition: Date;
-    observations: string;
-    equipment_type_id: string;
-    user_id: string;
+  make: string;
+  model: string;
+  status: string;
+  location: string;
+  date_of_acquisition: Date;
+  observations: string;
+  equipment_type_id: string;
+  user_id: string;
 };
 
 type UpdateEquipmentDto = Partial<CreateEquipmentDto>;
@@ -21,7 +23,12 @@ export class EquipmentsService {
   }
 
   async getEquipments() {
-    return await this.equipmentsModel.findAll();
+    return await this.equipmentsModel.findAll({
+      include: [
+        { model: User, as: "user", attributes: { exclude: ["password"] } },
+        { model: EquipmentType },
+      ],
+    });
   }
 
   async getEquipmentById(id: string) {
@@ -36,9 +43,19 @@ export class EquipmentsService {
     return await this.equipmentsModel.findOne({ where: { model } });
   }
 
-  async updateEquipment(id: string, equipment: UpdateEquipmentDto) {
+  async updateEquipment(id: string, equipment: UpdateEquipmentDto, user: User) {
+    const foundEquipment = await this.equipmentsModel.findByPk(id);
+
+    if (!foundEquipment) {
+      throw new Error("Equipment not found");
+    }
+
+    if (foundEquipment.user_id !== user.user_id) {
+      throw new Error("You are not allowed to update this equipment");
+    }
+
     return await this.equipmentsModel.update(equipment, {
-      where: { equipment_id: id },
+      where: { equipment_id: foundEquipment.equipment_id },
     });
   }
 

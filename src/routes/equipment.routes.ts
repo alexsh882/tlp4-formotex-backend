@@ -28,7 +28,7 @@ export class EquipmentRoutes {
           equipmentController.getEquipmentById
         );
     
-        router.put(
+        router.patch(
           "/equipments/:id",
           [validator(UpdateEquipmentSchema)],
           equipmentController.updateEquipment
