@@ -1,4 +1,5 @@
 import Make from "../../models/makes.model";
+import { CreateMakeDto, UpdateMakeDto } from "./dto/make.dto";
 
 export class MakeService {
   constructor(private makeModel: typeof Make) {}

@@ -1,5 +1,5 @@
-type CreateMakeDto = {
+export type CreateMakeDto = {
   name: string;
 };
 
-type UpdateMakeDto = Partial<CreateMakeDto>;
+export type UpdateMakeDto = Partial<CreateMakeDto>;
