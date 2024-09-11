@@ -37,6 +37,7 @@ export default class Make extends Model<
 
   @Column({
     unique: true,
+    allowNull: false,
   })
   name: string;
 
