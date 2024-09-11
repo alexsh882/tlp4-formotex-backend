@@ -43,14 +43,12 @@ export const UpdateInventorySchema = z
       const name = data.body.name;
       const id = data.params.id;
 
-      return await inventoryService
-        .getInventoryByName(name)
-        .then((result) => {
-          if (result && result.inventory_id !== id) {
-            return false;
-          }
-          return true;
-        });
+      return await inventoryService.getInventoryByName(name).then((result) => {
+        if (result && result.inventory_id !== id) {
+          return false;
+        }
+        return true;
+      });
     },
     { message: "El nombre ya existe" }
   );

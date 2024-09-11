@@ -4,6 +4,7 @@ import { EquipmentTypeRoutes } from "./equipment-type.routes";
 import { EquipmentRoutes } from "./equipment.routes";
 import { isAuthenticated } from "../middlewares/authentication";
 import { MakesRoutes } from "./makes.routes";
+import { InventoryRoutes } from "./inventory.routes";
 
 export class AppRouter {
   static get routes(): Router {
@@ -13,6 +14,7 @@ export class AppRouter {
     router.use("/api", isAuthenticated, EquipmentTypeRoutes.routes);
     router.use("/api", isAuthenticated, EquipmentRoutes.routes);
     router.use("/api", isAuthenticated, MakesRoutes.routes);
+    router.use("/api", isAuthenticated, InventoryRoutes.routes);
 
     return router;
   }
