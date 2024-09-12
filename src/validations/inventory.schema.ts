@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { InventoryService } from "../features/inventory/inventory.service";
+import { InventoryService } from "../features/inventories/inventory.service";
 
 const inventoryService = new InventoryService();
 

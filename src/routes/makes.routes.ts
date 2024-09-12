@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { MakeController } from "../features/make/make.controller";
-import { MakeService } from "../features/make/make.service";
 import Make from "../models/makes.model";
 import { CreateMakeSchema, UpdateMakeSchema } from "../validations/make.schema";
 import { validator } from "../middlewares/validator";
+import { MakeController } from "../features/makes/make.controller";
 
 export class MakesRoutes {
     static get routes(): Router {

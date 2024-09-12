@@ -2,7 +2,7 @@ import { z } from "zod";
 import { UserService } from "../features/users/user.service";
 import { EquipmentsService } from "../features/equipments/equipment.service";
 import { EquipmentStatus } from "../models/inventory-entry.model";
-import { InventoryService } from "../features/inventory/inventory.service";
+import { InventoryService } from "../features/inventories/inventory.service";
 
 const inventoryService = new InventoryService();
 const equipmentService = new EquipmentsService();

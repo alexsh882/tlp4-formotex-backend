@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MakeService } from "../features/make/make.service";
+import { MakeService } from "../features/makes/make.service";
 
 const makeService = new MakeService()
 

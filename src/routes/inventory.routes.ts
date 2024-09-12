@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { InventoryService } from "../features/inventory/inventory.service";
 import Inventory from "../models/inventory.model";
-import { InventoryController } from "../features/inventory/inventory.controller";
 import { validator } from "../middlewares/validator";
 import {
   CreateInventorySchema,
   UpdateInventorySchema,
 } from "../validations/inventory.schema";
+import { InventoryController } from "../features/inventories/inventory.controller";
 
 export class InventoryRoutes {
   static get routes(): Router {
