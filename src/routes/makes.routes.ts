@@ -9,9 +9,7 @@ export class MakesRoutes {
     static get routes(): Router {
         const router = Router();
 
-        const makeService = new MakeService(Make);
-
-        const makesController = new MakeController(makeService);
+        const makesController = new MakeController();
 
         router.get("/makes", makesController.getMakes);
         router.get("/makes/:id", makesController.getMakeById);

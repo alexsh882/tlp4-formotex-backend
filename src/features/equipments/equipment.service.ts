@@ -13,7 +13,7 @@ type CreateEquipmentDto = {
 type UpdateEquipmentDto = Partial<CreateEquipmentDto>;
 
 export class EquipmentsService {
-  constructor(private equipmentsModel: typeof Equipment) {}
+  constructor(private equipmentsModel: typeof Equipment = Equipment) {}
 
   async createEquipment(equipment: CreateEquipmentDto) {
     return await this.equipmentsModel.create(equipment);

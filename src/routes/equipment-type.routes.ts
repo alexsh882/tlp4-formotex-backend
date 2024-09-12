@@ -9,11 +9,7 @@ export class EquipmentTypeRoutes {
   static get routes(): Router {
     const router = Router();
 
-    const equipmentTypeService = new EquipmentTypesService(EquipmentType);
-
-    const equipmentTypeController = new EquipmentTypeController(
-      equipmentTypeService
-    );
+    const equipmentTypeController = new EquipmentTypeController();
 
     router.get("/equipment-types", equipmentTypeController.getEquipmentTypes);
 

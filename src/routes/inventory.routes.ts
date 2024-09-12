@@ -12,25 +12,15 @@ export class InventoryRoutes {
   static get routes(): Router {
     const router = Router();
 
-    const inventoryService = new InventoryService(Inventory);
-
-    const inventoryController = new InventoryController(inventoryService);
+    const inventoryController = new InventoryController();
 
     router.get("/inventories", inventoryController.getInventories);
 
-    router.post(
-      "/inventories",
-      validator(CreateInventorySchema),
-      inventoryController.createInventory
-    );
+    router.post("/inventories",validator(CreateInventorySchema),inventoryController.createInventory);
 
     router.get("/inventories/:id", inventoryController.getInventoryById);
 
-    router.patch(
-      "/inventories/:id",
-      validator(UpdateInventorySchema),
-      inventoryController.updateInventory
-    );
+    router.patch("/inventories/:id",validator(UpdateInventorySchema),inventoryController.updateInventory);
 
     router.delete("/inventories/:id", inventoryController.deleteInventory);
 

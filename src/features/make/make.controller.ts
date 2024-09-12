@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { MakeService } from "./make.service";
 
 export class MakeController {
-  constructor(private makeService: MakeService) {}
+  constructor(private makeService: MakeService =new MakeService) {}
 
   createMake = async (req: Request, res: Response) => {
     try {

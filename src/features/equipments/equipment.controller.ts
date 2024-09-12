@@ -3,7 +3,7 @@ import { EquipmentsService } from "./equipment.service";
 import User from "../../models/users.model";
 
 export class EquipmentController {
-  constructor(private equipmentService: EquipmentsService) {}
+  constructor(private equipmentService: EquipmentsService= new EquipmentsService) {}
 
   createEquipment = async (req: Request, res: Response) => {
     try {

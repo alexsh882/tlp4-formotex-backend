@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { EquipmentTypesService } from "./equipment-types.service";
 
 export class EquipmentTypeController {
-  constructor(private equipmentTypesService: EquipmentTypesService) {}
+  constructor(private equipmentTypesService: EquipmentTypesService = new EquipmentTypesService) {}
 
   createEquipmentType = async (req: Request, res: Response) => {
     try {

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { InventoryService } from "./inventory.service";
 
 export class InventoryController {
-  constructor(private inventoryService: InventoryService) {}
+  constructor(private inventoryService: InventoryService= new InventoryService) {}
 
   getInventories = async (req: Request, res: Response) => {
     try {

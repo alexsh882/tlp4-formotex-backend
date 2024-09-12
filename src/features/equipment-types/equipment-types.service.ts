@@ -7,7 +7,9 @@ type CreateEquipmentTypeDto = {
 type UpdateEquipmentTypeDto = Partial<CreateEquipmentTypeDto>;
 
 export class EquipmentTypesService {
-  constructor(private equipmentTypesModel: typeof EquipmentType) {}
+  constructor(
+    private equipmentTypesModel: typeof EquipmentType = EquipmentType
+  ) {}
 
   async createEquipmentType(equipmentType: CreateEquipmentTypeDto) {
     return await this.equipmentTypesModel.create(equipmentType);
@@ -25,7 +27,6 @@ export class EquipmentTypesService {
     return await this.equipmentTypesModel.findOne({
       where: { name },
     });
-
   }
 
   async updateEquipmentType(id: string, equipmentType: UpdateEquipmentTypeDto) {

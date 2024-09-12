@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 export class AuthController {
   
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService = new AuthService) {}
 
   signUp = async (req: Request, res: Response) => {
     try {

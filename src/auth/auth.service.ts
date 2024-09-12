@@ -20,8 +20,8 @@ type UserSignIn = {
 
 export class AuthService {
   constructor(
-    private userModel?: typeof User,
-    private roleModel?: typeof Role
+    private userModel: typeof User = User,
+    private roleModel: typeof Role = Role
   ) {}
 
   signUp = async ({ names, username, password }: UserSignUp) => {

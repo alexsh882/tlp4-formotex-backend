@@ -2,7 +2,7 @@ import Inventory from "../../models/inventory.model";
 import { CreateInventoryDto, UpdateInventoryDto } from "./dto/inventory.dto";
 
 export class InventoryService {
-  constructor(private inventoryModel: typeof Inventory) {}
+  constructor(private inventoryModel: typeof Inventory = Inventory) {}
 
   async createInventory(inventory: CreateInventoryDto) {
     return await this.inventoryModel.create(inventory);
