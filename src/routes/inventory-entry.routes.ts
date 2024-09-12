@@ -39,6 +39,12 @@ export class InventoryEntryRoutes {
       inventoryEntriesController.updateInventoryEntry
     );
 
+    router.patch(
+      "/inventory-entries/:id/out",
+      validator(UpdateInventoryEntrySchema),
+      inventoryEntriesController.outInventoryEntry
+    );
+
     router.delete(
       "/inventory-entries/:id",
       inventoryEntriesController.deleteInventoryEntry
