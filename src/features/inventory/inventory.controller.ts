@@ -18,7 +18,7 @@ export class InventoryController {
 
   createInventory = async (req: Request, res: Response) => {
     try {
-      const inventory = this.inventoryService.createInventory(req.body);
+      const inventory = await this.inventoryService.createInventory(req.body);
       res.status(201).json(inventory);
     } catch (error) {
       if (error instanceof Error) {
@@ -30,7 +30,7 @@ export class InventoryController {
 
   getInventoryById = async (req: Request, res: Response) => {
     try {
-      const inventory = this.inventoryService.getInventoryById(req.params.id);
+      const inventory = await this.inventoryService.getInventoryById(req.params.id);
       res.status(200).json(inventory);
     } catch (error) {
       if (error instanceof Error) {
@@ -42,11 +42,13 @@ export class InventoryController {
 
   updateInventory = async (req: Request, res: Response) => {
     try {
-      const inventory = this.inventoryService.updateInventory(
+      const inventory = await this.inventoryService.updateInventory(
         req.params.id,
         req.body
       );
-      res.status(200).json(inventory);
+      res.status(200).json({
+        message: "El inventario se ha actualizado correctamente",
+      });
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });
