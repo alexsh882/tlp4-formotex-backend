@@ -16,9 +16,6 @@ const bodyInventoryEntrySchema = z.object({
   status: z.nativeEnum(EquipmentStatus, {
     message: "El estado es requerido",
   }),
-  warehouse: z.string({ message: "La ubicación es requerida" }).min(1, {
-    message: "La ubicación es requerida",
-  }),
   date_in: z.date({
     message: "La fecha de ingreso es requerida",
     coerce: true,

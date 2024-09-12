@@ -19,9 +19,8 @@ interface InventoryEntriesAttributes {
   inventory_entry_id: number;
   serial: string;
   status: string;
-  warehouse: string;
   date_in: Date;
-  date_out: Date;
+  date_out?: Date | null;
   observations: string;
   equipment_id: string;
   inventory_id: string;
@@ -62,11 +61,6 @@ export default class InventoryEntry extends Model<
     values: Object.values(EquipmentStatus),
   })
   status: string;
-
-  @Column({
-    allowNull: true,
-  })
-  warehouse: string;
 
   @Column({
     allowNull: true,
