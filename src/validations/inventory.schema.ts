@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { InventoryService } from "../features/inventory/inventory.service";
-import Inventory from "../models/inventory.model";
 
-const inventoryService = new InventoryService(Inventory);
+const inventoryService = new InventoryService();
 
 export const CreateInventorySchema = z.object({
   body: z.object({

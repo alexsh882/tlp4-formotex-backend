@@ -1,17 +1,12 @@
 import { z } from "zod";
-import Equipment from "../models/equipment.model";
 import { UserService } from "../features/users/user.service";
-import User from "../models/users.model";
-import { EquipmentTypesService } from "../features/equipment-types/equipment-types.service";
-import EquipmentType from "../models/equipment-type.model";
 import { EquipmentsService } from "../features/equipments/equipment.service";
 import { EquipmentStatus } from "../models/inventory-entry.model";
 import { InventoryService } from "../features/inventory/inventory.service";
-import Inventory from "../models/inventory.model";
 
-const inventoryService = new InventoryService(Inventory);
-const equipmentService = new EquipmentsService(Equipment);
-const userService = new UserService(User);
+const inventoryService = new InventoryService();
+const equipmentService = new EquipmentsService();
+const userService = new UserService();
 
 const bodyInventoryEntrySchema = z.object({
   serial: z.string({ message: "El número de serie es requerido" }).min(1, {

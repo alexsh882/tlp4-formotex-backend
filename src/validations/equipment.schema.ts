@@ -1,14 +1,9 @@
 import { z } from "zod";
-import Equipment from "../models/equipment.model";
 import { UserService } from "../features/users/user.service";
-import User from "../models/users.model";
 import { EquipmentTypesService } from "../features/equipment-types/equipment-types.service";
-import EquipmentType from "../models/equipment-type.model";
-import { EquipmentsService } from "../features/equipments/equipment.service";
 
-const equipmentTypeService = new EquipmentTypesService(EquipmentType);
-const equipmentService = new EquipmentsService(Equipment);
-const userService = new UserService(User);
+const equipmentTypeService = new EquipmentTypesService();
+const userService = new UserService();
 
 const bodyEquipmentSchema = z.object({
   model: z

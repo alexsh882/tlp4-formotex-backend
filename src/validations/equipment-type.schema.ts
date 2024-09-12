@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { EquipmentTypesService } from "../features/equipment-types/equipment-types.service";
-import EquipmentType from "../models/equipment-type.model";
 
-const equipmentTypeService = new EquipmentTypesService(EquipmentType);
+const equipmentTypeService = new EquipmentTypesService();
 
 export const CreateEquipmentTypeSchema = z.object({
   body: z.object({

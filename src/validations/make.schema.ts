@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { MakeService } from "../features/make/make.service";
-import Make from "../models/makes.model";
 
-const makeService = new MakeService(Make)
+const makeService = new MakeService()
 
 
 const bodyMakeSchema = z.object({
