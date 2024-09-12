@@ -35,9 +35,7 @@ export default class Inventory extends Model<
   @Column(DataType.UUID)
   inventory_id: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column(DataType.STRING)
   name: string;
 
   @HasMany(() => InventoryEntry)
