@@ -1,5 +1,6 @@
 import EquipmentType from "../../models/equipment-type.model";
 import Equipment from "../../models/equipment.model";
+import Make from "../../models/makes.model";
 import User from "../../models/users.model";
 import { CreateEquipmentDto, UpdateEquipmentDto } from "./dto/equipment.dto";
 
@@ -16,6 +17,7 @@ export class EquipmentsService {
       include: [
         { model: User, as: "user", attributes: { exclude: ["password"] } },
         { model: EquipmentType },
+        { model: Make}
       ],
     });
   }
