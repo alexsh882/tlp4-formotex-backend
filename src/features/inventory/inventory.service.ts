@@ -35,8 +35,13 @@ export class InventoryService {
   }
 
   async deleteInventory(id: string) {
-    return await this.inventoryModel.destroy({
-      where: { inventory_id: id },
-    });
+    const foundInventory = await this.inventoryModel.findByPk(id);
+
+    if (!foundInventory) {
+      throw new Error("Inventory not found");
+    }
+   
+
+    return await foundInventory.destroy();
   }
 }
