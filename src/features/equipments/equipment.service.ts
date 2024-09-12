@@ -1,16 +1,8 @@
 import EquipmentType from "../../models/equipment-type.model";
 import Equipment from "../../models/equipment.model";
 import User from "../../models/users.model";
+import { CreateEquipmentDto, UpdateEquipmentDto } from "./dto/equipment.dto";
 
-type CreateEquipmentDto = {
-  model: string;
-  characteristics: string;
-  make_id: string;
-  equipment_type_id: string;
-  user_id: string;
-};
-
-type UpdateEquipmentDto = Partial<CreateEquipmentDto>;
 
 export class EquipmentsService {
   constructor(private equipmentsModel: typeof Equipment = Equipment) {}
