@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt, { Secret } from "jsonwebtoken";
 
-import { ROLES } from "../const/roles";
 import Role from "../models/role.model";
 import User from "../models/users.model";
+import { UserService } from "../features/users/user.service";
 
 export class BadRequestError extends Error {}
 
@@ -19,10 +19,7 @@ type UserSignIn = {
 };
 
 export class AuthService {
-  constructor(
-    private userModel: typeof User = User,
-    private roleModel: typeof Role = Role
-  ) {}
+  constructor(private userService = new UserService()) {}
 
   getProfile = async (token: string) => {
     if (!token) {
@@ -34,27 +31,16 @@ export class AuthService {
   };
 
   signUp = async ({ names, username, password }: UserSignUp) => {
-    const userFounded = await this.userModel?.findOne({
-      where: { username: username },
-    });
+    const userFounded = await this.userService.getUserByUsername(username);
 
     if (userFounded) {
       throw new Error("El usuario ya existe");
     }
 
-    const roleUser = await this.roleModel?.findOne({
-      where: { name: ROLES.USER },
-    });
-
-    if (!roleUser) {
-      throw new Error("El rol no existe");
-    }
-
-    const newUser = await this.userModel?.create({
-      names,
+    const newUser = await this.userService.createNewUser({
       username,
-      password: bcrypt.hashSync(password, 10),
-      role_id: roleUser.role_id,
+      names,
+      password,
     });
 
     if (!newUser) {
@@ -63,7 +49,6 @@ export class AuthService {
 
     const user = {
       ...newUser.dataValues,
-      user_role: roleUser,
       password: undefined,
       role_id: undefined,
     };
@@ -74,14 +59,7 @@ export class AuthService {
   };
 
   signIn = async ({ username, password }: UserSignIn) => {
-    const userFounded = await this.userModel?.findOne({
-      where: { username },
-      include: {
-        model: this.roleModel,
-        as: "user_role",
-      },
-      attributes: { exclude: ["role_id"] },
-    });
+    const userFounded = await this.userService.getUserByUsername(username);
 
     if (!userFounded) {
       throw new BadRequestError("Usuario o contraseña incorrecta");
@@ -103,8 +81,8 @@ export class AuthService {
     return { user, token };
   };
 
-  logout = async ({ id }: { id: number }) => {
-    const user = await this.userModel?.findByPk(id);
+  logout = async ({ id }: { id: string }) => {
+    const user = await this.userService.getUserById(id);
 
     if (!user) {
       throw new Error("Usuario no encontrado");
@@ -131,7 +109,6 @@ export class AuthService {
   }
 
   verifyToken = async (token: string) => {
-
     return new Promise((resolve, reject) => {
       jwt.verify(
         token,
@@ -140,20 +117,12 @@ export class AuthService {
           if (err) {
             reject(err);
           }
-          const dataDecoded = decoded as JwtPayload;
+          const { user_id } = decoded as JwtPayload;
 
-          if (!dataDecoded?.user_id) {
+          if (!user_id) {
             reject(err);
           }
-          const user = await this.userModel?.findByPk(dataDecoded?.user_id, {
-            include: {
-              model: this.roleModel,
-              as: "user_role",
-            },
-            attributes: {
-              exclude: ["password"],
-            }
-          });
+          const user = await this.userService.getUserById(user_id);
 
           resolve(user);
           reject(new Error("Token no válido o no existe"));
@@ -164,8 +133,6 @@ export class AuthService {
 }
 
 type JwtPayload = {
-  user_id: number;
+  user_id: string;
   expires_in: number;
 };
-
-export const authService = new AuthService(User, Role);

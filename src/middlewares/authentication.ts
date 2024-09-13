@@ -10,7 +10,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
     
   }
 
-  const authService = new AuthService(User);
+  const authService = new AuthService();
 
   try {
     if (token) {

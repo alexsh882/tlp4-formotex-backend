@@ -6,6 +6,7 @@ import User from "../models/users.model";
 import Role from "../models/role.model";
 import { seedRoles } from "./seeders/roles.seeder";
 import EquipmentType from "../models/equipment-type.model";
+import { seedUserAdmin } from "./seeders/user.seeder";
 
 export class SequelizeConfig implements IDatabase {
   private DB_HOST: string;
@@ -29,8 +30,8 @@ export class SequelizeConfig implements IDatabase {
   verifyEnvVar(envVar: string): string {
     //verificar que la variable de entorno está definida
 
-    const envVarExists = Object.keys(process.env).indexOf(envVar) !== -1
-        
+    const envVarExists = Object.keys(process.env).indexOf(envVar) !== -1;
+
     if (!envVarExists) {
       throw new Error(`La variable de entorno ${envVar} no está definida.`);
     }
@@ -54,8 +55,9 @@ export class SequelizeConfig implements IDatabase {
 
     await db
       .sync({ force: false })
-      .then(() => {
-        seedRoles();
+      .then(async () => {
+        await seedRoles();
+        await seedUserAdmin();
         console.log("La base de datos se ha conectado correctamente.");
       })
       .catch((err: Error) => {
