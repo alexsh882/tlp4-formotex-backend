@@ -145,7 +145,15 @@ export class AuthService {
           if (!dataDecoded?.user_id) {
             reject(err);
           }
-          const user = await this.userModel?.findByPk(dataDecoded?.user_id);
+          const user = await this.userModel?.findByPk(dataDecoded?.user_id, {
+            include: {
+              model: this.roleModel,
+              as: "user_role",
+            },
+            attributes: {
+              exclude: ["password"],
+            }
+          });
 
           resolve(user);
           reject(new Error("Token no válido o no existe"));
