@@ -9,7 +9,9 @@ export class AuthController {
       const token = req.headers.authorization?.split(" ")[1];
       const user = await this.authService.getProfile(token!);
       return res.status(200).json(user);
-    } catch (error: unknown) {
+    } catch (error) {
+      console.log(error);
+      
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });
       }

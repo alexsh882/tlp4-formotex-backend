@@ -24,10 +24,14 @@ export class AuthService {
     private roleModel: typeof Role = Role
   ) {}
 
-  getProfile = async (token: string) => {    
-    const user= await this.verifyToken(token);
+  getProfile = async (token: string) => {
+    if (!token) {
+      throw new Error("Token no proporcionado");
+    }
+    const user = await this.verifyToken(token);
+
     return user;
-  }
+  };
 
   signUp = async ({ names, username, password }: UserSignUp) => {
     const userFounded = await this.userModel?.findOne({
@@ -127,6 +131,7 @@ export class AuthService {
   }
 
   verifyToken = async (token: string) => {
+
     return new Promise((resolve, reject) => {
       jwt.verify(
         token,
@@ -137,10 +142,10 @@ export class AuthService {
           }
           const dataDecoded = decoded as JwtPayload;
 
-          if (!dataDecoded.user_id) {
+          if (!dataDecoded?.user_id) {
             reject(err);
           }
-          const user = await this.userModel?.findByPk(dataDecoded.user_id);
+          const user = await this.userModel?.findByPk(dataDecoded?.user_id);
 
           resolve(user);
           reject(new Error("Token no válido o no existe"));

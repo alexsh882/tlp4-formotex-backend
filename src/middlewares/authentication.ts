@@ -12,12 +12,16 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
 
   const authService = new AuthService(User);
 
-  if (token) {
-    const user = await authService.verifyToken(token);
-    if (user) {
-      req.user = user as User;
-      return next();
+  try {
+    if (token) {
+      const user = await authService.getProfile(token);
+      if (user) {
+        req.user = user as User;
+        return next();
+      }
     }
+  } catch (error) {
+    return res.status(400).json({ message: "Tenes que iniciar sesión." });
   }
 
   return res.status(401).json({ message: "Tenes que iniciar sesión para continuar." });
