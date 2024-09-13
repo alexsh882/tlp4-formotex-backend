@@ -11,7 +11,7 @@ export class AppRouter {
   static get routes(): Router {
     const router = Router();
 
-    router.use("/api", AuthRoutes.routes);
+    router.use("/api/auth", AuthRoutes.routes);
     router.use("/api", isAuthenticated, EquipmentTypeRoutes.routes);
     router.use("/api", isAuthenticated, EquipmentRoutes.routes);
     router.use("/api", isAuthenticated, MakesRoutes.routes);

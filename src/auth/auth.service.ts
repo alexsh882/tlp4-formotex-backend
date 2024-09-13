@@ -24,6 +24,11 @@ export class AuthService {
     private roleModel: typeof Role = Role
   ) {}
 
+  getProfile = async (token: string) => {    
+    const user= await this.verifyToken(token);
+    return user;
+  }
+
   signUp = async ({ names, username, password }: UserSignUp) => {
     const userFounded = await this.userModel?.findOne({
       where: { username: username },

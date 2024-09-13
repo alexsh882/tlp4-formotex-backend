@@ -13,11 +13,13 @@ export class AuthRoutes {
 
     const authController = new AuthController();    
 
-    router.post("/auth/register", validator(UserSignUpSchema), authController.signUp);
+    router.post("/register", validator(UserSignUpSchema), authController.signUp);
 
-    router.post("/auth/login", validator(UserSignInSchema), authController.signIn);
+    router.post("/login", validator(UserSignInSchema), authController.signIn);
 
-    router.post("/auth/logout", isAuthenticated, authController.logout);
+    router.post("/logout", isAuthenticated, authController.logout);
+
+    router.get("/profile", isAuthenticated, authController.getProfile);
 
     return router;
   }

@@ -4,6 +4,19 @@ export class AuthController {
   
   constructor(private authService: AuthService = new AuthService) {}
 
+  getProfile = async (req: Request, res: Response) => {
+    try {
+      const token = req.headers.authorization?.split(" ")[1];
+      const user = await this.authService.getProfile(token!);
+      return res.status(200).json(user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+      return res.status(500).json({ message: "Error interno del servidor." });
+    }
+  };
+
   signUp = async (req: Request, res: Response) => {
     try {
       const { names, username, password } = req.body;
