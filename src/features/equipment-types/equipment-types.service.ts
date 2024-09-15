@@ -1,17 +1,12 @@
 import EquipmentType from "../../models/equipment-type.model";
-
-type CreateEquipmentTypeDto = {
-  name: string;
-};
-
-type UpdateEquipmentTypeDto = Partial<CreateEquipmentTypeDto>;
+import { IEquipmentTypeCreationAttributes, IEquipmentTypeUpdateAttributes } from "./interfaces/equipment-type";
 
 export class EquipmentTypesService {
   constructor(
     private equipmentTypesModel: typeof EquipmentType = EquipmentType
   ) {}
 
-  async createEquipmentType(equipmentType: CreateEquipmentTypeDto) {
+  async createEquipmentType(equipmentType: IEquipmentTypeCreationAttributes) {
     return await this.equipmentTypesModel.create(equipmentType);
   }
 
@@ -29,7 +24,7 @@ export class EquipmentTypesService {
     });
   }
 
-  async updateEquipmentType(id: string, equipmentType: UpdateEquipmentTypeDto) {
+  async updateEquipmentType(id: string, equipmentType: IEquipmentTypeUpdateAttributes) {
     return await this.equipmentTypesModel.update(equipmentType, {
       where: { equipment_type_id: id },
     });

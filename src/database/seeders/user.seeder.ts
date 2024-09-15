@@ -3,7 +3,7 @@ import * as fs from "node:fs/promises";
 
 import { ROLES } from "../../const/roles";
 import Role from "../../models/role.model";
-import User, { UserCreationAttributes } from "../../models/users.model";
+import User, { IUserCreationAttributes } from "../../models/users.model";
 import { hashPassword } from "../../utils/hash-password";
 
 
@@ -42,7 +42,7 @@ export const seedUsers = async () => {
   const contents = await fs.readFile('src/database/seeders/mock/users.json', 'utf8');
     
 
-  const basicUsers = JSON.parse(contents) as  UserCreationAttributes[];
+  const basicUsers = JSON.parse(contents) as  IUserCreationAttributes[];
   
 
   const newBasicUsers = basicUsers.map(async (user) => {

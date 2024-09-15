@@ -11,16 +11,8 @@ import {
   Default,
 } from "sequelize-typescript";
 
-import { Optional } from "sequelize";
 import Equipment from "./equipment.model";
-
-interface EquipmentTypeAttributes {
-  equipment_type_id: string;
-  name: string;
-}
-
-interface RoleCreationAttributes
-  extends Optional<EquipmentTypeAttributes, "equipment_type_id"> {}
+import { IEquipmentTypeAttributes, IEquipmentTypeCreationAttributes } from "../features/equipment-types/interfaces/equipment-type";
 
 @Table({
   tableName: "equipment_types",
@@ -28,8 +20,8 @@ interface RoleCreationAttributes
   timestamps: true,
 })
 export default class EquipmentType extends Model<
-  EquipmentTypeAttributes,
-  RoleCreationAttributes
+  IEquipmentTypeAttributes,
+  IEquipmentTypeCreationAttributes
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)

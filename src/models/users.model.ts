@@ -12,17 +12,10 @@ import {
   DataType,
 } from "sequelize-typescript";
 import Role from "./role.model";
-import { Optional } from "sequelize";
-
-interface UserAttributes {
-  user_id: string;
-  names: string;
-  username: string;
-  password: string;
-  role_id: string;
-}
-
-export interface UserCreationAttributes extends Optional<UserAttributes, "user_id" | "role_id"> {}
+import {
+  IUserAttributes,
+  IUserCreationAttributes,
+} from "../features/users/interfaces/user";
 
 @Table({
   tableName: "users",
@@ -30,8 +23,8 @@ export interface UserCreationAttributes extends Optional<UserAttributes, "user_i
   timestamps: true,
 })
 export default class User extends Model<
-  UserAttributes,
-  UserCreationAttributes
+  IUserAttributes,
+  IUserCreationAttributes
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -42,7 +35,7 @@ export default class User extends Model<
   names: string;
 
   @Column({
-    unique: true
+    unique: true,
   })
   username: string;
 

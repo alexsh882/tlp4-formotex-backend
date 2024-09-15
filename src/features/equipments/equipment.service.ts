@@ -2,13 +2,15 @@ import EquipmentType from "../../models/equipment-type.model";
 import Equipment from "../../models/equipment.model";
 import Make from "../../models/makes.model";
 import User from "../../models/users.model";
-import { CreateEquipmentDto, UpdateEquipmentDto } from "./dto/equipment.dto";
-
+import {
+  IEquipmentCreationAttributes,
+  IEquipmentUpdateAttributes,
+} from "./interfaces/equipment";
 
 export class EquipmentsService {
   constructor(private equipmentsModel: typeof Equipment = Equipment) {}
 
-  async createEquipment(equipment: CreateEquipmentDto) {
+  async createEquipment(equipment: IEquipmentCreationAttributes) {
     return await this.equipmentsModel.create(equipment);
   }
 
@@ -17,7 +19,7 @@ export class EquipmentsService {
       include: [
         { model: User, as: "user", attributes: { exclude: ["password"] } },
         { model: EquipmentType },
-        { model: Make}
+        { model: Make },
       ],
     });
   }
@@ -26,12 +28,15 @@ export class EquipmentsService {
     return await this.equipmentsModel.findByPk(id);
   }
 
-
   async getEquipmentByModel(model: string) {
     return await this.equipmentsModel.findOne({ where: { model } });
   }
 
-  async updateEquipment(id: string, equipment: UpdateEquipmentDto, user: User) {
+  async updateEquipment(
+    id: string,
+    equipment: IEquipmentUpdateAttributes,
+    user: User
+  ) {
     const foundEquipment = await this.equipmentsModel.findByPk(id);
 
     if (!foundEquipment) {

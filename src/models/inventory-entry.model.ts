@@ -11,27 +11,11 @@ import {
   DataType,
   Default,
 } from "sequelize-typescript";
-import { Optional } from "sequelize";
 import Equipment from "./equipment.model";
 import Inventory from "./inventory.model";
 import User from "./users.model";
+import { IInventoryEntriesAttributes, IInventoryEntriesCreationAttributes } from "../features/inventory-entries/interfaces/inventory-entry";
 
-interface InventoryEntriesAttributes {
-  inventory_entry_id: number;
-  serial: string;
-  status: string;
-  date_in: Date;
-  date_out?: Date | null;
-  observations: string;
-  equipment_id: string;
-  inventory_id: string;
-  user_id: string;
-}
-
-export interface InventoryEntriesCreationAttributes
-  extends Optional<InventoryEntriesAttributes, "inventory_entry_id"> {}
-
-  export interface InventoryEntriesUpdateAttributes extends Partial<InventoryEntriesAttributes> {}
 
 export enum EquipmentStatus {
   REPAIRED = "repaired",
@@ -48,8 +32,8 @@ export const ENUM_EQUIPMENT_STATUS = Object.values(EquipmentStatus);
   timestamps: true,
 })
 export default class InventoryEntry extends Model<
-  InventoryEntriesAttributes,
-  InventoryEntriesCreationAttributes
+  IInventoryEntriesAttributes,
+  IInventoryEntriesCreationAttributes
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)

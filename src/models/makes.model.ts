@@ -11,15 +11,10 @@ import {
   DataType,
 } from "sequelize-typescript";
 
-import { Optional } from "sequelize";
 import Equipment from "./equipment.model";
+import { IMakeAttributes, IMakeCreationAttributes } from "../features/makes/interfaces/make";
 
-interface MakeAttributes {
-  make_id: string;
-  name: string;
-}
 
-interface MakeCreationAttributes extends Optional<MakeAttributes, "make_id"> {}
 
 @Table({
   tableName: "makes",
@@ -27,8 +22,8 @@ interface MakeCreationAttributes extends Optional<MakeAttributes, "make_id"> {}
   timestamps: true,
 })
 export default class Make extends Model<
-  MakeAttributes,
-  MakeCreationAttributes
+  IMakeAttributes,
+  IMakeCreationAttributes
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)

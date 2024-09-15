@@ -1,7 +1,7 @@
+import { IInventoryEntriesCreationAttributes } from "../../features/inventory-entries/interfaces/inventory-entry";
 import Equipment from "../../models/equipment.model";
 import InventoryEntry, {
   EquipmentStatus,
-  InventoryEntriesCreationAttributes,
 } from "../../models/inventory-entry.model";
 import Inventory from "../../models/inventory.model";
 import User from "../../models/users.model";
@@ -61,7 +61,7 @@ const inventoryEntriesData = [
     observations: "Detalle de la observación 8",
     date_in: new Date("2024-09-08"),
   },
-] as InventoryEntriesCreationAttributes[];
+] as IInventoryEntriesCreationAttributes[];
 
 export const seedInventoryEntriesData = async () => {
   const equipments = await Equipment.findAll();

@@ -1,47 +1,62 @@
 import { IsNull } from "sequelize-typescript";
-import InventoryEntry, { InventoryEntriesCreationAttributes, InventoryEntriesUpdateAttributes } from "../../models/inventory-entry.model";
+import InventoryEntry, {
+  IInventoryEntriesCreationAttributes,
+  IInventoryEntriesUpdateAttributes,
+} from "../../models/inventory-entry.model";
 import { Op } from "sequelize";
 import Equipment from "../../models/equipment.model";
 import Inventory from "../../models/inventory.model";
 import User from "../../models/users.model";
+import Make from "../../models/makes.model";
 
 export class InventoryEntriesService {
   constructor(
     private inventoryEntriesModel: typeof InventoryEntry = InventoryEntry
   ) {}
 
-  async createInventoryEntry(inventoryEntry: InventoryEntriesCreationAttributes): Promise<InventoryEntry> {
+  async createInventoryEntry(
+    inventoryEntry: IInventoryEntriesCreationAttributes
+  ): Promise<InventoryEntry> {
     return await this.inventoryEntriesModel.create(inventoryEntry);
   }
 
-  async getInventoryEntries() : Promise<InventoryEntry[]> {
+  async getInventoryEntries(): Promise<InventoryEntry[]> {
     return await this.inventoryEntriesModel.findAll({
-     include:[
-        { model: Equipment, as: 'equipment' },
-        { model: Inventory, as: 'inventory' },
-        { model: User, as: 'user', attributes: ['user_id', 'names'] }
-     ] 
+      include: [
+        {
+          model: Equipment,
+          as: "equipment",
+          include: [
+            {
+              model: Make,
+              attributes: ["make_id", "name"],
+            },
+          ]
+        },
+        { model: Inventory, as: "inventory" },
+        { model: User, as: "user", attributes: ["user_id", "names"] },
+      ],
     });
   }
 
-  async getAvailableInventoryEntries() : Promise<InventoryEntry[]> {
+  async getAvailableInventoryEntries(): Promise<InventoryEntry[]> {
     return await this.inventoryEntriesModel.findAll({
       where: {
         date_out: {
           [Op.is]: null,
-        }
-      }
+        },
+      },
     });
   }
 
-  async getInventoryEntryById(id: string) : Promise<InventoryEntry | null> {
+  async getInventoryEntryById(id: string): Promise<InventoryEntry | null> {
     return await this.inventoryEntriesModel.findByPk(id);
   }
 
   async updateInventoryEntry(
     id: string,
-    inventoryEntry: InventoryEntriesUpdateAttributes
-  )  {
+    inventoryEntry: IInventoryEntriesUpdateAttributes
+  ) {
     const foundedInventoryEntry = await this.inventoryEntriesModel.findByPk(id);
 
     if (!foundedInventoryEntry) {

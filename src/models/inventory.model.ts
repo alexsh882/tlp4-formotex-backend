@@ -13,13 +13,7 @@ import {
 
 import { Optional } from "sequelize";
 import InventoryEntry from "./inventory-entry.model";
-
-interface InventoryAttributes {
-  inventory_id: string;
-  name: string;
-}
-
-interface InventoryCreationAttributes extends Optional<InventoryAttributes, "inventory_id"> {}
+import { IInventoryAttributes, IInventoryCreationAttributes } from "../features/inventories/interfaces/inventory";
 
 @Table({
   tableName: "inventories",
@@ -27,8 +21,8 @@ interface InventoryCreationAttributes extends Optional<InventoryAttributes, "inv
   timestamps: true,
 })
 export default class Inventory extends Model<
-  InventoryAttributes,
-  InventoryCreationAttributes
+  IInventoryAttributes,
+  IInventoryCreationAttributes
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)

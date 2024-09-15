@@ -1,14 +1,9 @@
 import { Table, Column, Model, HasMany, CreatedAt, DeletedAt, UpdatedAt, PrimaryKey, Default, DataType } from "sequelize-typescript";
 
-import { Optional } from "sequelize";
 import User from "./users.model";
+import { IRoleAttributes, IRoleCreationAttributes } from "../features/roles/interfaces/role";
 
-interface RoleAttributes {
-  role_id: string;
-  name: string;
-}
 
-interface RoleCreationAttributes extends Optional<RoleAttributes, 'role_id'> {}
 
 
 @Table({
@@ -16,7 +11,7 @@ interface RoleCreationAttributes extends Optional<RoleAttributes, 'role_id'> {}
   paranoid: true,
   timestamps: true
 })
-export default class Role extends Model<RoleAttributes, RoleCreationAttributes> {
+export default class Role extends Model<IRoleAttributes, IRoleCreationAttributes> {
   
   @PrimaryKey
   @Default(DataType.UUIDV4)

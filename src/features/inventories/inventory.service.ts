@@ -1,10 +1,9 @@
-import Inventory from "../../models/inventory.model";
-import { CreateInventoryDto, UpdateInventoryDto } from "./dto/inventory.dto";
+import Inventory, { IInventoryCreationAttributes, IInventoryUpdateAttributes } from "../../models/inventory.model";
 
 export class InventoryService {
   constructor(private inventoryModel: typeof Inventory = Inventory) {}
 
-  async createInventory(inventory: CreateInventoryDto) {
+  async createInventory(inventory: IInventoryCreationAttributes) {
     return await this.inventoryModel.create(inventory);
   }
 
@@ -22,7 +21,7 @@ export class InventoryService {
     });
   }
 
-  async updateInventory(id: string, inventory: UpdateInventoryDto) {
+  async updateInventory(id: string, inventory: IInventoryUpdateAttributes) {
     const foundInventory = await this.inventoryModel.findByPk(id);
 
     if (!foundInventory) {

@@ -19,31 +19,28 @@ export const seedEquipmentsData = async () => {
 
   const data = JSON.parse(contents) as Data[];
 
-  const equipmentTypes = data.map(async (equipment) => {
-    return EquipmentType.upsert({
-      name: equipment.type,
-    });
-  });
-
-  const equipmentMake = data.map(async (equipment) => {
-    return Make.upsert({
-      name: equipment.marca,
-    });
-  });
-
-  const equipmentTypesCreated = await Promise.all(equipmentTypes);
-  const equipmentMakeCreated = await Promise.all(equipmentMake);
-
   const users = await User.findAll();
 
   const equipment = data.map(async (equipment) => {
+    const [equipmentTypesCreated, create] = await EquipmentType.findOrCreate({
+      where: {
+        name: equipment.type,
+      },
+      defaults: {
+        name: equipment.type,
+      },
+    });
+
+    const [make, created] = await Make.findOrCreate({
+      where: {
+        name: equipment.marca,
+      },
+      defaults: {
+        name: equipment.marca,
+      },
+    });
+
     const randomUser = Math.floor(Math.random() * users.length);
-    const randomEquipmentType = Math.floor(
-      Math.random() * equipmentTypesCreated.length
-    );
-    const randomEquipmentMake = Math.floor(
-      Math.random() * equipmentMakeCreated.length
-    );
 
     return Equipment.findOrCreate({
       where: {
@@ -52,10 +49,9 @@ export const seedEquipmentsData = async () => {
       defaults: {
         model: equipment.modelo,
         characteristics: equipment.characteristics,
+        equipment_type_id: equipmentTypesCreated.equipment_type_id,
         user_id: users[randomUser].user_id,
-        equipment_type_id:
-          equipmentTypesCreated[randomEquipmentType][0].equipment_type_id,
-        make_id: equipmentMakeCreated[randomEquipmentMake][0].make_id,
+        make_id: make.make_id,
       },
     });
   });

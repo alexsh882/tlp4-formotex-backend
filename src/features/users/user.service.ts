@@ -1,16 +1,9 @@
 import bcrypt from "bcrypt";
 import { ROLES } from "../../const/roles";
-import User from "../../models/users.model";
+import User, { IUserCreationAttributes } from "../../models/users.model";
 import { RoleService } from "../roles/role.service";
 import Role from "../../models/role.model";
 import { hashPassword } from "../../utils/hash-password";
-
-export interface IUser {
-  names: string;
-  username: string;
-  password: string;
-  role_id?: string;
-}
 
 export class UserService {
   constructor(
@@ -41,7 +34,7 @@ export class UserService {
     });
   }
 
-  async createNewUser(user: IUser) {
+  async createNewUser(user: IUserCreationAttributes) {
     const roleUser = await this.roleService.getRoleByName(ROLES.USER);
     if (!roleUser) {
       throw new Error("El rol no existe");

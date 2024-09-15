@@ -1,10 +1,9 @@
-import Make from "../../models/makes.model";
-import { CreateMakeDto, UpdateMakeDto } from "./dto/make.dto";
+import Make, { IMakeCreationAttributes, IMakeUpdateAttributes } from "../../models/makes.model";
 
 export class MakeService {
   constructor(private makeModel: typeof Make = Make) {}
 
-  async createMake(make: CreateMakeDto) {
+  async createMake(make: IMakeCreationAttributes) {
     return await this.makeModel.create(make);
   }
 
@@ -22,7 +21,7 @@ export class MakeService {
     });
   }
 
-  async updateMake(id: string, make: UpdateMakeDto) {
+  async updateMake(id: string, make: IMakeUpdateAttributes) {
     const foundMake = await this.makeModel.findByPk(id);
 
     if (!foundMake) {

@@ -11,23 +11,11 @@ import {
   DataType,
   Default,
 } from "sequelize-typescript";
-import { Optional } from "sequelize";
+
 import EquipmentType from "./equipment-type.model";
 import User from "./users.model";
 import Make from "./makes.model";
-
-interface EquipmentAttributes {
-  equipment_id: number;
-  model: string;
-  characteristics: string;
-  make_id: string;
-  equipment_type_id: string;
-  user_id: string;
-}
-
-interface EquipmentCreationAttributes
-  extends Optional<EquipmentAttributes, "equipment_id"> {}
-
+import { IEquipmentAttributes, IEquipmentCreationAttributes } from "../features/equipments/interfaces/equipment";
 
 @Table({
   tableName: "equipments",
@@ -35,8 +23,8 @@ interface EquipmentCreationAttributes
   timestamps: true,
 })
 export default class Equipment extends Model<
-  EquipmentAttributes,
-  EquipmentCreationAttributes
+  IEquipmentAttributes,
+  IEquipmentCreationAttributes
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)
