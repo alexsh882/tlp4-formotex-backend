@@ -5,6 +5,9 @@ import {
   UpdateInventoryEntriesDto,
 } from "./dto/inventory-entries.dto";
 import { Op } from "sequelize";
+import Equipment from "../../models/equipment.model";
+import Inventory from "../../models/inventory.model";
+import User from "../../models/users.model";
 
 export class InventoryEntriesService {
   constructor(
@@ -16,7 +19,13 @@ export class InventoryEntriesService {
   }
 
   async getInventoryEntries() : Promise<InventoryEntry[]> {
-    return await this.inventoryEntriesModel.findAll({});
+    return await this.inventoryEntriesModel.findAll({
+     include:[
+        { model: Equipment, as: 'equipment' },
+        { model: Inventory, as: 'inventory' },
+        { model: User, as: 'user', attributes: ['user_id', 'names'] }
+     ] 
+    });
   }
 
   async getAvailableInventoryEntries() : Promise<InventoryEntry[]> {

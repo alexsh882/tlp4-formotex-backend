@@ -14,6 +14,7 @@ import {
 import { Optional } from "sequelize";
 import Equipment from "./equipment.model";
 import Inventory from "./inventory.model";
+import User from "./users.model";
 
 interface InventoryEntriesAttributes {
   inventory_entry_id: number;
@@ -85,12 +86,18 @@ export default class InventoryEntry extends Model<
   @ForeignKey(() => Inventory)
   inventory_id: string;
 
+  @ForeignKey(() => User)
+  user_id: string;
+
   
   @BelongsTo(() => Equipment)
   equipment: Equipment;
 
   @BelongsTo(() => Inventory)
   inventory: Inventory;
+
+  @BelongsTo(() => User)
+  user: User;
 
   @CreatedAt
   created_at: Date;
