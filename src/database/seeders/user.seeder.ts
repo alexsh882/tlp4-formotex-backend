@@ -1,10 +1,9 @@
 import { ROLES } from "../../const/roles"
-import { UserService } from "../../features/users/user.service"
 import Role from "../../models/role.model"
 import User from "../../models/users.model"
 
 
-const userService = new UserService();
+
 
 export const seedUserAdmin = async () => {
     const adminRole = await Role.findOne({
@@ -20,11 +19,12 @@ export const seedUserAdmin = async () => {
     const newAdminUser = {
         names: "Alejandro",
         username: "admin",
-        password: "Password.123"
+        password: "Password.123",
+        role_id: adminRole.role_id
     }
 
-    const newAdmin = await userService.createNewUser(newAdminUser);
+    await User.upsert(newAdminUser);
 
-    await userService.updateRoleToUser(newAdmin.user_id, adminRole?.role_id);
+    
   
 }
