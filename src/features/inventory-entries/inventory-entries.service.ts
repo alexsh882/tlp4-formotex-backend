@@ -1,9 +1,5 @@
 import { IsNull } from "sequelize-typescript";
-import InventoryEntry from "../../models/inventory-entry.model";
-import {
-  CreateInventoryEntriesDto,
-  UpdateInventoryEntriesDto,
-} from "./dto/inventory-entries.dto";
+import InventoryEntry, { InventoryEntriesCreationAttributes, InventoryEntriesUpdateAttributes } from "../../models/inventory-entry.model";
 import { Op } from "sequelize";
 import Equipment from "../../models/equipment.model";
 import Inventory from "../../models/inventory.model";
@@ -14,7 +10,7 @@ export class InventoryEntriesService {
     private inventoryEntriesModel: typeof InventoryEntry = InventoryEntry
   ) {}
 
-  async createInventoryEntry(inventoryEntry: CreateInventoryEntriesDto): Promise<InventoryEntry> {
+  async createInventoryEntry(inventoryEntry: InventoryEntriesCreationAttributes): Promise<InventoryEntry> {
     return await this.inventoryEntriesModel.create(inventoryEntry);
   }
 
@@ -44,7 +40,7 @@ export class InventoryEntriesService {
 
   async updateInventoryEntry(
     id: string,
-    inventoryEntry: UpdateInventoryEntriesDto
+    inventoryEntry: InventoryEntriesUpdateAttributes
   )  {
     const foundedInventoryEntry = await this.inventoryEntriesModel.findByPk(id);
 

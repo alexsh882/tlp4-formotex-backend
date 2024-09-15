@@ -28,8 +28,10 @@ interface InventoryEntriesAttributes {
   user_id: string;
 }
 
-interface InventoryEntriesCreationAttributes
+export interface InventoryEntriesCreationAttributes
   extends Optional<InventoryEntriesAttributes, "inventory_entry_id"> {}
+
+  export interface InventoryEntriesUpdateAttributes extends Partial<InventoryEntriesAttributes> {}
 
 export enum EquipmentStatus {
   REPAIRED = "repaired",

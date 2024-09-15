@@ -22,7 +22,7 @@ interface UserAttributes {
   role_id: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "user_id"> {}
+export interface UserCreationAttributes extends Optional<UserAttributes, "user_id" | "role_id"> {}
 
 @Table({
   tableName: "users",

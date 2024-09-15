@@ -6,7 +6,10 @@ import User from "../models/users.model";
 import Role from "../models/role.model";
 import { seedRoles } from "./seeders/roles.seeder";
 import EquipmentType from "../models/equipment-type.model";
-import { seedUserAdmin } from "./seeders/user.seeder";
+import { seedUserAdmin, seedUsers } from "./seeders/user.seeder";
+import { seedEquipmentsData } from "./seeders/equipments.seeder";
+import { seedInventories } from "./seeders/inventories.seeder";
+import { seedInventoryEntriesData } from "./seeders/inventory-entries.seeder";
 
 export class SequelizeConfig implements IDatabase {
   private DB_HOST: string;
@@ -58,6 +61,10 @@ export class SequelizeConfig implements IDatabase {
       .then(async () => {
         await seedRoles();
         await seedUserAdmin();
+        await seedUsers();
+        await seedInventories();
+        await seedEquipmentsData();
+        await seedInventoryEntriesData();
         console.log("La base de datos se ha conectado correctamente.");
       })
       .catch((err: Error) => {

@@ -1,5 +1,5 @@
 export type CreateInventoryEntriesDto = {
-  inventory_entry_id: number;
+  inventory_entry_id: string;
   serial: string;
   status: string;
   date_in: Date;
