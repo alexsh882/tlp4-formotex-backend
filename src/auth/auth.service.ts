@@ -1,9 +1,10 @@
-import bcrypt from "bcrypt";
+
 import jwt, { Secret } from "jsonwebtoken";
 
 import Role from "../models/role.model";
 import User from "../models/users.model";
 import { UserService } from "../features/users/user.service";
+import { comparePassword } from "../utils/hash-password";
 
 export class BadRequestError extends Error {}
 
@@ -65,7 +66,7 @@ export class AuthService {
       throw new BadRequestError("Usuario o contraseña incorrecta");
     }
 
-    const isPasswordValid = bcrypt.compareSync(password, userFounded.password);
+    const isPasswordValid = comparePassword(password, userFounded.password);
 
     if (!isPasswordValid) {
       throw new BadRequestError("Usuario o contraseña incorrecta");
@@ -117,12 +118,12 @@ export class AuthService {
           if (err) {
             reject(err);
           }
-          const { user_id } = decoded as JwtPayload;
+          const jwtDecoded = decoded as JwtPayload;
 
-          if (!user_id) {
-            reject(err);
+          if (!jwtDecoded?.user_id) {
+            return reject(err);
           }
-          const user = await this.userService.getUserById(user_id);
+          const user = await this.userService.getUserById(jwtDecoded.user_id);
 
           resolve(user);
           reject(new Error("Token no válido o no existe"));

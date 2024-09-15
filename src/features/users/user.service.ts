@@ -3,6 +3,7 @@ import { ROLES } from "../../const/roles";
 import User from "../../models/users.model";
 import { RoleService } from "../roles/role.service";
 import Role from "../../models/role.model";
+import { hashPassword } from "../../utils/hash-password";
 
 export interface IUser {
   names: string;
@@ -49,7 +50,7 @@ export class UserService {
       {
         names: user.names,
         username: user.username,
-        password: bcrypt.hashSync(user.password, 10),
+        password: hashPassword(user.password),
         role_id: roleUser.role_id,
       },
       {

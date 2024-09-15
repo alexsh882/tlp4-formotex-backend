@@ -54,7 +54,7 @@ export class SequelizeConfig implements IDatabase {
     db.addModels([__dirname + "/../models/*.model.*"]);
 
     await db
-      .sync({ force: true })
+      .sync({ force: false })
       .then(async () => {
         await seedRoles();
         await seedUserAdmin();

@@ -41,7 +41,9 @@ export default class User extends Model<
   @Column({})
   names: string;
 
-  @Column({})
+  @Column({
+    unique: true
+  })
   username: string;
 
   @Column({})
