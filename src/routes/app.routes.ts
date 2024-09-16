@@ -7,6 +7,7 @@ import { MakesRoutes } from "./makes.routes";
 import { InventoryRoutes } from "./inventory.routes";
 import { InventoryEntryRoutes } from "./inventory-entry.routes";
 import { UserRoutes } from "./users.routes";
+import { RoleRoutes } from "./role.route";
 
 export class AppRouter {
   static get routes(): Router {
@@ -19,6 +20,8 @@ export class AppRouter {
     router.use("/api", isAuthenticated, InventoryRoutes.routes);
     router.use("/api", isAuthenticated, InventoryEntryRoutes.routes);
     router.use("/api", isAuthenticated, UserRoutes.routes);
+    router.use("/api", isAuthenticated, RoleRoutes.routes);
+
 
     return router;
   }
