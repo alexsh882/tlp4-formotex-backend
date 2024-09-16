@@ -4,7 +4,7 @@ import { validator } from "../middlewares/validator";
 import {
   CreateInventoryEntrySchema,
   UpdateInventoryEntrySchema,
-} from "../validations/inventory_entry.chema";
+} from "../validations/inventory_entry.schema";
 
 export class InventoryEntryRoutes {
   static get routes(): Router {
