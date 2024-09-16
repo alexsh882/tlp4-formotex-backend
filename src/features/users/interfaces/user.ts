@@ -12,4 +12,6 @@ export interface IUserCreationAttributes
   extends Optional<IUserAttributes, "user_id" | "role_id"> {}
 
 export interface IUserUpdateAttributes
-  extends Partial<IUserCreationAttributes> {}
+  extends Partial<IUserCreationAttributes> {
+    role_name: string
+  }

@@ -4,7 +4,10 @@ import User from "../../models/users.model";
 import { RoleService } from "../roles/role.service";
 import Role from "../../models/role.model";
 import { hashPassword } from "../../utils/hash-password";
-import { IUserCreationAttributes } from "./interfaces/user";
+import {
+  IUserCreationAttributes,
+  IUserUpdateAttributes,
+} from "./interfaces/user";
 
 export class UserService {
   constructor(
@@ -21,6 +24,7 @@ export class UserService {
       attributes: {
         exclude: ["password"],
       },
+      order: [["created_at", "DESC"]],
     });
   }
 
@@ -48,7 +52,9 @@ export class UserService {
   }
 
   async createNewUser(user: IUserCreationAttributes) {
-    const roleUser = await this.roleService.getRoleByName(ROLES.USER);
+    const roleUser = user.role_id
+      ? await this.roleService.getRoleById(user.role_id)
+      : await this.roleService.getRoleByName(ROLES.USER);
     if (!roleUser) {
       throw new Error("El rol no existe");
     }
@@ -70,7 +76,25 @@ export class UserService {
     return newUser;
   }
 
-  async updateRoleToUser(user_id: string, role_id: string) {
+  async updateUser(user_id: string, user: IUserUpdateAttributes) {
+    const foundedUser = await this.userModel.findByPk(user_id);
+
+    if (!foundedUser) {
+      throw new Error("El usuario no existe");
+    }
+
+    const foundedRole = await this.roleService.getRoleById(
+      user.role_id as string
+    );
+
+    return await foundedUser.update({
+      names: user.names,
+      username: user.username,
+      role_id: foundedRole?.role_id,
+    });
+  }
+
+  async updatePassword(user_id: string, password: string) {
     const foundedUser = await this.userModel.findByPk(user_id);
 
     if (!foundedUser) {
@@ -78,7 +102,48 @@ export class UserService {
     }
 
     return await foundedUser.update({
-      role_id,
+      password: hashPassword(password),
     });
+  }
+
+  async updateRoleToUser(user_id: string, role_id: string) {
+    const foundedUser = await this.userModel.findByPk(user_id);
+
+    if (!foundedUser) {
+      throw new Error("El usuario no existe");
+    }
+
+    const foundedRole = await this.roleService.getRoleById(role_id);
+
+    if (!foundedRole) {
+      throw new Error("El rol no existe");
+    }
+
+    return await foundedUser.update({
+      role_id: foundedRole.role_id,
+    });
+  }
+
+  async deleteUser(user_id: string, user?: User) {
+    const foundedUser = await this.userModel.findByPk(user_id, {
+      include: {
+        model: Role,
+        as: "user_role",
+      },
+    });
+
+    if (!foundedUser) {
+      throw new Error("El usuario no existe");
+    }
+
+    if (user_id === user?.user_id) {
+      throw new Error("No puedes eliminarte a ti mismo");
+    }
+
+    if (foundedUser.user_role.name === ROLES.ADMIN) {
+      throw new Error("No puedes eliminar a un administrador");
+    }
+
+    await foundedUser.destroy();
   }
 }
