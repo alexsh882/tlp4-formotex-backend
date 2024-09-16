@@ -12,6 +12,18 @@ export class UserService {
     private roleService = new RoleService()
   ) {}
 
+  async getUsers() {
+    return await this.userModel.findAll({
+      include: {
+        model: Role,
+        as: "user_role",
+      },
+      attributes: {
+        exclude: ["password"],
+      },
+    });
+  }
+
   async getUserById(user_id: string) {
     return await this.userModel.findByPk(user_id, {
       include: {
@@ -66,8 +78,7 @@ export class UserService {
     }
 
     return await foundedUser.update({
-      role_id
-    })
-
+      role_id,
+    });
   }
 }
