@@ -1,13 +1,11 @@
 import { IsNull } from "sequelize-typescript";
-import InventoryEntry, {
-  IInventoryEntriesCreationAttributes,
-  IInventoryEntriesUpdateAttributes,
-} from "../../models/inventory-entry.model";
+import InventoryEntry from "../../models/inventory-entry.model";
 import { Op } from "sequelize";
 import Equipment from "../../models/equipment.model";
 import Inventory from "../../models/inventory.model";
 import User from "../../models/users.model";
 import Make from "../../models/makes.model";
+import { IInventoryEntriesCreationAttributes, IInventoryEntriesUpdateAttributes } from "./interfaces/inventory-entry";
 
 export class InventoryEntriesService {
   constructor(

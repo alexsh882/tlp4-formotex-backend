@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
 import { ROLES } from "../../const/roles";
-import User, { IUserCreationAttributes } from "../../models/users.model";
+import User from "../../models/users.model";
 import { RoleService } from "../roles/role.service";
 import Role from "../../models/role.model";
 import { hashPassword } from "../../utils/hash-password";
+import { IUserCreationAttributes } from "./interfaces/user";
 
 export class UserService {
   constructor(

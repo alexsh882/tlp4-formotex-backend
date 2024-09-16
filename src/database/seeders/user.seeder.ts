@@ -3,8 +3,9 @@ import * as fs from "node:fs/promises";
 
 import { ROLES } from "../../const/roles";
 import Role from "../../models/role.model";
-import User, { IUserCreationAttributes } from "../../models/users.model";
+import User from "../../models/users.model";
 import { hashPassword } from "../../utils/hash-password";
+import { IUserCreationAttributes } from "../../features/users/interfaces/user";
 
 
 export const seedUserAdmin = async () => {
@@ -25,7 +26,12 @@ export const seedUserAdmin = async () => {
     role_id: adminRole.role_id,
   };
 
-  await User.upsert(newAdminUser);
+  await User.findOrCreate({
+    where: {
+      username: newAdminUser.username,
+    },
+    defaults: newAdminUser,
+  });
 };
 
 export const seedUsers = async () => {

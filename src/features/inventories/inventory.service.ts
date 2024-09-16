@@ -1,4 +1,5 @@
-import Inventory, { IInventoryCreationAttributes, IInventoryUpdateAttributes } from "../../models/inventory.model";
+import Inventory from "../../models/inventory.model";
+import { IInventoryCreationAttributes, IInventoryUpdateAttributes } from "./interfaces/inventory";
 
 export class InventoryService {
   constructor(private inventoryModel: typeof Inventory = Inventory) {}

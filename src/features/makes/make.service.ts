@@ -1,4 +1,5 @@
-import Make, { IMakeCreationAttributes, IMakeUpdateAttributes } from "../../models/makes.model";
+import Make from "../../models/makes.model";
+import { IMakeCreationAttributes, IMakeUpdateAttributes } from "./interfaces/make";
 
 export class MakeService {
   constructor(private makeModel: typeof Make = Make) {}
