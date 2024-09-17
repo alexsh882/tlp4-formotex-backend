@@ -1,15 +1,23 @@
+import Equipment from "../../models/equipment.model";
 import Make from "../../models/makes.model";
-import { IMakeCreationAttributes, IMakeUpdateAttributes } from "./interfaces/make";
+import {
+  IMakeCreationAttributes,
+  IMakeUpdateAttributes,
+} from "./interfaces/make";
 
 export class MakeService {
   constructor(private makeModel: typeof Make = Make) {}
 
-  async createMake(make: IMakeCreationAttributes) {
-    return await this.makeModel.create(make);
+  async createMake(make: IMakeCreationAttributes) {    
+    return await this.makeModel.create({
+      name: make.name,
+    });
   }
 
   async getMakes() {
-    return await this.makeModel.findAll({});
+    return await this.makeModel.findAll({
+      order: [["name", "ASC"]],
+    });
   }
 
   async getMakeById(id: string) {
@@ -35,10 +43,16 @@ export class MakeService {
   }
 
   async deleteMake(id: string) {
-    const foundMake = await this.makeModel.findByPk(id);
+    const foundMake = await this.makeModel.findByPk(id, {
+      include: [{ model: Equipment, as: "equipments" }],
+    });
 
     if (!foundMake) {
       throw new Error("Make not found");
+    }
+
+    if (foundMake.equipments.length) {
+      throw new Error("Cannot delete make with associated equipments");      
     }
 
     return await this.makeModel.destroy({
