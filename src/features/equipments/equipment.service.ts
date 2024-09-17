@@ -1,5 +1,6 @@
 import EquipmentType from "../../models/equipment-type.model";
 import Equipment from "../../models/equipment.model";
+import InventoryEntry from "../../models/inventory-entry.model";
 import Make from "../../models/makes.model";
 import User from "../../models/users.model";
 import {
@@ -55,6 +56,24 @@ export class EquipmentsService {
   }
 
   async deleteEquipment(id: string) {
+
+    const foundEquipment = await this.equipmentsModel.findByPk(id,{
+      include: [
+        {
+          model: InventoryEntry,
+          as: 'inventory_entries'
+        }
+      ]
+    });
+
+    if (!foundEquipment) {
+      throw new Error("Equipo no encontrado.");
+    }
+
+    if (foundEquipment.inventory_entries.length > 0) {
+      throw new Error("No se puede eliminar el equipo porque tiene entradas en inventario.");
+    }
+
     return await this.equipmentsModel.destroy({
       where: { equipment_id: id },
     });

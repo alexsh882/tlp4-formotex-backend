@@ -10,12 +10,14 @@ import {
   PrimaryKey,
   DataType,
   Default,
+  HasMany,
 } from "sequelize-typescript";
 
 import EquipmentType from "./equipment-type.model";
 import User from "./users.model";
 import Make from "./makes.model";
 import { IEquipmentAttributes, IEquipmentCreationAttributes } from "../features/equipments/interfaces/equipment";
+import InventoryEntry from "./inventory-entry.model";
 
 @Table({
   tableName: "equipments",
@@ -57,6 +59,9 @@ export default class Equipment extends Model<
 
   @BelongsTo(() => User)
   user: User;
+
+  @HasMany(() => InventoryEntry)
+  inventory_entries: InventoryEntry[];
 
   @CreatedAt
   created_at: Date;
