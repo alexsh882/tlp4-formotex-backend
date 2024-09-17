@@ -33,7 +33,8 @@ export default class Inventory extends Model<
   name: string;
 
   @HasMany(() => InventoryEntry)
-  users: InventoryEntry[];
+  inventory_entries: InventoryEntry[];
+  
 
   @CreatedAt
   created_at: Date;
