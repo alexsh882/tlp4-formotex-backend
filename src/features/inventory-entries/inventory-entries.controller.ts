@@ -8,8 +8,13 @@ export class InventoryEntriesController {
 
   createInventoryEntry = async (req: Request, res: Response) => {
     try {
+
+      if (!req.user) {
+        return res.status(401).json({ message: "No estás autorizado para realizar esta acción." });
+      }
+
       const inventoryEntry =
-        await this.inventoryEntriesService.createInventoryEntry(req.body);
+        await this.inventoryEntriesService.createInventoryEntry(req.body, req.user );
       res.status(201).json(inventoryEntry);
     } catch (error) {
       if (error instanceof Error) {

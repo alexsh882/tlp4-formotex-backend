@@ -52,18 +52,6 @@ const bodyInventoryEntrySchema = z.object({
       },
       { message: "El inventario no existe" }
     ),
-  user_id: z
-    .string({ message: "El usuario es requerido" })
-    .uuid({
-      message: "El usuario es requerido",
-    })
-    .refine(
-      async (user_id) => {
-        const user = await userService.getUserById(user_id);
-        return !!user;
-      },
-      { message: "El usuario no existe" }
-    ),
 });
 
 export const CreateInventoryEntrySchema = z.object({

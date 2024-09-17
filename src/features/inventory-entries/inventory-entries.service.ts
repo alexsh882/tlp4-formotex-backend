@@ -5,7 +5,10 @@ import Equipment from "../../models/equipment.model";
 import Inventory from "../../models/inventory.model";
 import User from "../../models/users.model";
 import Make from "../../models/makes.model";
-import { IInventoryEntriesCreationAttributes, IInventoryEntriesUpdateAttributes } from "./interfaces/inventory-entry";
+import {
+  IInventoryEntriesCreationAttributes,
+  IInventoryEntriesUpdateAttributes,
+} from "./interfaces/inventory-entry";
 
 export class InventoryEntriesService {
   constructor(
@@ -13,9 +16,19 @@ export class InventoryEntriesService {
   ) {}
 
   async createInventoryEntry(
-    inventoryEntry: IInventoryEntriesCreationAttributes
+    inventoryEntry: IInventoryEntriesCreationAttributes,
+    user: User
   ): Promise<InventoryEntry> {
-    return await this.inventoryEntriesModel.create(inventoryEntry);
+    return await this.inventoryEntriesModel.create({
+      equipment_id: inventoryEntry.equipment_id,
+      inventory_id: inventoryEntry.inventory_id,
+      user_id: user.user_id,
+      date_in: inventoryEntry.date_in,
+      status: inventoryEntry.status,
+      serial: inventoryEntry.serial,
+      observations: inventoryEntry.observations,
+      date_out: inventoryEntry.date_out,
+    });
   }
 
   async getInventoryEntries(): Promise<InventoryEntry[]> {
@@ -29,7 +42,7 @@ export class InventoryEntriesService {
               model: Make,
               attributes: ["make_id", "name"],
             },
-          ]
+          ],
         },
         { model: Inventory, as: "inventory" },
         { model: User, as: "user", attributes: ["user_id", "names"] },
