@@ -7,7 +7,7 @@ export class EquipmentController {
 
   createEquipment = async (req: Request, res: Response) => {
     try {
-      const equipment = await this.equipmentService.createEquipment(req.body);
+      const equipment = await this.equipmentService.createEquipment(req.body, req.user as User);
       res.status(201).json(equipment);
     } catch (error) {
       if (error instanceof Error) {

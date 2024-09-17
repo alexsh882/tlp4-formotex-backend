@@ -10,8 +10,14 @@ import {
 export class EquipmentsService {
   constructor(private equipmentsModel: typeof Equipment = Equipment) {}
 
-  async createEquipment(equipment: IEquipmentCreationAttributes) {
-    return await this.equipmentsModel.create(equipment);
+  async createEquipment(equipment: IEquipmentCreationAttributes, user: User) {
+    return await this.equipmentsModel.create({
+      model: equipment.model,
+      characteristics: equipment.characteristics,
+      equipment_type_id: equipment.equipment_type_id,
+      make_id: equipment.make_id,
+      user_id: user.user_id,
+    });
   }
 
   async getEquipments() {
@@ -40,11 +46,7 @@ export class EquipmentsService {
     const foundEquipment = await this.equipmentsModel.findByPk(id);
 
     if (!foundEquipment) {
-      throw new Error("Equipment not found");
-    }
-
-    if (foundEquipment.user_id !== user.user_id) {
-      throw new Error("You are not allowed to update this equipment");
+      throw new Error("Equipo no encontrado.");
     }
 
     return await this.equipmentsModel.update(equipment, {
