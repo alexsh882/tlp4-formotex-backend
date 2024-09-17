@@ -1,5 +1,8 @@
 import EquipmentType from "../../models/equipment-type.model";
-import { IEquipmentTypeCreationAttributes, IEquipmentTypeUpdateAttributes } from "./interfaces/equipment-type";
+import {
+  IEquipmentTypeCreationAttributes,
+  IEquipmentTypeUpdateAttributes,
+} from "./interfaces/equipment-type";
 
 export class EquipmentTypesService {
   constructor(
@@ -7,11 +10,15 @@ export class EquipmentTypesService {
   ) {}
 
   async createEquipmentType(equipmentType: IEquipmentTypeCreationAttributes) {
-    return await this.equipmentTypesModel.create(equipmentType);
+    return await this.equipmentTypesModel.create({
+      name: equipmentType.name,
+    });
   }
 
   async getEquipmentTypes() {
-    return await this.equipmentTypesModel.findAll({});
+    return await this.equipmentTypesModel.findAll({
+      order: [["name", "ASC"]],
+    });
   }
 
   async getEquipmentTypeById(id: string) {
@@ -24,10 +31,18 @@ export class EquipmentTypesService {
     });
   }
 
-  async updateEquipmentType(id: string, equipmentType: IEquipmentTypeUpdateAttributes) {
-    return await this.equipmentTypesModel.update(equipmentType, {
-      where: { equipment_type_id: id },
-    });
+  async updateEquipmentType(
+    id: string,
+    equipmentType: IEquipmentTypeUpdateAttributes
+  ) {
+    return await this.equipmentTypesModel.update(
+      {
+        name: equipmentType.name,
+      },
+      {
+        where: { equipment_type_id: id },
+      }
+    );
   }
 
   async deleteEquipmentType(id: string) {
