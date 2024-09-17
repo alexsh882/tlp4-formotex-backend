@@ -34,7 +34,7 @@ export class MakeService {
     const foundMake = await this.makeModel.findByPk(id);
 
     if (!foundMake) {
-      throw new Error("Make not found");
+      throw new Error("Marca no encontrada");
     }
 
     return await this.makeModel.update(make, {
@@ -48,11 +48,11 @@ export class MakeService {
     });
 
     if (!foundMake) {
-      throw new Error("Make not found");
+      throw new Error("Marca no encontrada");
     }
 
     if (foundMake.equipments.length) {
-      throw new Error("Cannot delete make with associated equipments");      
+      throw new Error("No se puede eliminar la marca porque tiene equipos asociados.");      
     }
 
     return await this.makeModel.destroy({
