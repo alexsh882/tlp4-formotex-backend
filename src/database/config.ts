@@ -12,4 +12,4 @@ export class DatabaseConfig {
   }
 }
 
-export const dbConfig = new DatabaseConfig(new SequelizeConfig());
+export const dbConfig = new DatabaseConfig(SequelizeConfig.getInstance());

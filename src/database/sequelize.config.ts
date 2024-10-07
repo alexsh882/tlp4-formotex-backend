@@ -1,11 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
-import { dbConfig } from "./config";
 import { IDatabase } from "./db.interface";
 import { Dialect } from "sequelize";
-import User from "../models/users.model";
-import Role from "../models/role.model";
 import { seedRoles } from "./seeders/roles.seeder";
-import EquipmentType from "../models/equipment-type.model";
 import { seedUserAdmin, seedUsers } from "./seeders/user.seeder";
 import { seedEquipmentsData } from "./seeders/equipments.seeder";
 import { seedInventories } from "./seeders/inventories.seeder";
@@ -33,9 +29,7 @@ export class SequelizeConfig implements IDatabase {
   verifyEnvVar(envVar: string): string {
     //verificar que la variable de entorno está definida
 
-    const envVarExists = Object.keys(process.env).indexOf(envVar) !== -1;
-
-    if (!envVarExists) {
+    if (envVar in process.env) {
       throw new Error(`La variable de entorno ${envVar} no está definida.`);
     }
     return process.env[envVar] as string;
