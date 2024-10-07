@@ -44,9 +44,14 @@ export class InventoryEntriesService {
             },
           ],
         },
-        { model: Inventory, as: "inventory" },
+        {
+          model: Inventory,
+          as: "inventory",
+          attributes: ["inventory_id", "name"],
+        },
         { model: User, as: "user", attributes: ["user_id", "names"] },
       ],
+      order: [["date_in", "DESC"]],
     });
   }
 
@@ -61,7 +66,26 @@ export class InventoryEntriesService {
   }
 
   async getInventoryEntryById(id: string): Promise<InventoryEntry | null> {
-    return await this.inventoryEntriesModel.findByPk(id);
+    return await this.inventoryEntriesModel.findByPk(id, {
+      include: [
+        {
+          model: Equipment,
+          as: "equipment",
+          include: [
+            {
+              model: Make,
+              attributes: ["make_id", "name"],
+            },
+          ],
+        },
+        {
+          model: Inventory,
+          as: "inventory",
+          attributes: ["inventory_id", "name"],
+        },
+        { model: User, as: "user", attributes: ["user_id", "names"] },
+      ],
+    });
   }
 
   async updateInventoryEntry(
