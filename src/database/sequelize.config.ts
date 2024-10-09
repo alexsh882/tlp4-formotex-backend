@@ -28,11 +28,10 @@ export class SequelizeConfig implements IDatabase {
   // probar la existencia de variable de entorno
   verifyEnvVar(envVar: string): string {
     //verificar que la variable de entorno está definida
-
     if (envVar in process.env) {
-      throw new Error(`La variable de entorno ${envVar} no está definida.`);
+      return process.env[envVar] as string;
     }
-    return process.env[envVar] as string;
+    throw new Error(`La variable de entorno ${envVar} no está definida.`);
   }
 
   constructor() {
