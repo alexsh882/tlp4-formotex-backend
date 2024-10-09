@@ -11,7 +11,13 @@ export const roles = [
 ];
 
 export const seedRoles = async () => {
-    const rolesToCreate = roles.map((role) => Role.upsert(role));
+  const existRoles = await Role.count();
+
+  if (existRoles > 0) {
+    return;
+  }
+
+  const rolesToCreate = roles.map((role) => Role.upsert(role));
 
   await Promise.all(rolesToCreate);
 };

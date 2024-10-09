@@ -64,6 +64,12 @@ const inventoryEntriesData = [
 ] as IInventoryEntriesCreationAttributes[];
 
 export const seedInventoryEntriesData = async () => {
+  const existInventoryEntries = await InventoryEntry.count();
+
+  if (existInventoryEntries > 0) {
+    return;
+  }
+
   const equipments = await Equipment.findAll();
   const inventories = await Inventory.findAll();
   const users = await User.findAll();

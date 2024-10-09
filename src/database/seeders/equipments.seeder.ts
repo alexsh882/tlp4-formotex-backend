@@ -12,6 +12,12 @@ type Data = {
 };
 
 export const seedEquipmentsData = async () => {
+  const existEquipments = await Equipment.count();
+
+  if (existEquipments > 0) {
+    return;
+  }
+
   const contents = await fs.readFile(
     "src/database/seeders/mock/equipments.json",
     "utf8"

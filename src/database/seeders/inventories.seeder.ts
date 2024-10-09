@@ -13,6 +13,13 @@ const inventoryData = [
 ];
 
 export const seedInventories = async () => {
+
+  const existInventories = await Inventory.count();
+
+  if (existInventories > 0) {
+    return;
+  }
+
   const inventories = inventoryData.map(async (inventory) => {
     return Inventory.findOrCreate({
       where: {
