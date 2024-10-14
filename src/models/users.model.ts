@@ -56,4 +56,8 @@ export default class User extends Model<
 
   @DeletedAt
   deleted_at: Date;
+
+  notification(message: string) {
+    console.log(`Usuario ${this.names} notificado. Mensaje: ${message}`);
+  }
 }

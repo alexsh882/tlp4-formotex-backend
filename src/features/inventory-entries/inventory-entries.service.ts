@@ -9,17 +9,21 @@ import {
   IInventoryEntriesCreationAttributes,
   IInventoryEntriesUpdateAttributes,
 } from "./interfaces/inventory-entry";
+import { InventoryEntryObserver } from "./observers/inventory-entry-observer";
 
 export class InventoryEntriesService {
   constructor(
-    private inventoryEntriesModel: typeof InventoryEntry = InventoryEntry
+    private inventoryEntriesModel: typeof InventoryEntry = InventoryEntry,
+    private observer: InventoryEntryObserver = InventoryEntryObserver.getInstance()
   ) {}
 
   async createInventoryEntry(
     inventoryEntry: IInventoryEntriesCreationAttributes,
     user: User
   ): Promise<InventoryEntry> {
-    return await this.inventoryEntriesModel.create({
+
+
+    const inventoryCreated = await this.inventoryEntriesModel.create({
       equipment_id: inventoryEntry.equipment_id,
       inventory_id: inventoryEntry.inventory_id,
       user_id: user.user_id,
@@ -29,6 +33,12 @@ export class InventoryEntriesService {
       observations: inventoryEntry.observations,
       date_out: inventoryEntry.date_out,
     });
+
+    if (inventoryCreated) {                  
+      this.observer.notifyUsers(`Ingresó en fecha ${inventoryCreated.date_in.toISOString()}`);
+    }
+
+    return inventoryCreated;
   }
 
   async getInventoryEntries(): Promise<InventoryEntry[]> {

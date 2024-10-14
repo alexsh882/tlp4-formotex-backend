@@ -1,10 +1,10 @@
-
 import jwt, { Secret } from "jsonwebtoken";
 
 import Role from "../models/role.model";
 import User from "../models/users.model";
 import { UserService } from "../features/users/user.service";
 import { comparePassword } from "../utils/hash-password";
+import { InventoryEntryObserver } from "../features/inventory-entries/observers/inventory-entry-observer";
 
 export class BadRequestError extends Error {}
 
@@ -20,7 +20,10 @@ type UserSignIn = {
 };
 
 export class AuthService {
-  constructor(private userService = new UserService()) {}
+  constructor(
+    private userService = new UserService(),
+    private observer: InventoryEntryObserver = InventoryEntryObserver.getInstance()
+  ) {}
 
   getProfile = async (token: string) => {
     if (!token) {
@@ -73,6 +76,9 @@ export class AuthService {
     }
 
     const token = await this.createToken(userFounded.user_id);
+
+    //Agrego al observador al usuario que inició sesión
+    this.observer.addObservers(userFounded)
 
     const user = {
       ...userFounded.dataValues,
